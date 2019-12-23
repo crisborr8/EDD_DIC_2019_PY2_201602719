@@ -1,40 +1,34 @@
 package Usuario;
 
-public class User_Menu extends Frame.Frame{
-    
+public class User_TreesB extends Frame.Frame{
+        
+    User_TreesB_Insertar uTBI;
+    User_TreesB_Eliminar uTBE;
     User_Trees uT;
-    User_Matriz uM;
-    User_Algoritmos uA;
-    Frame.Login lgn;
     EDD.Hash hash;
     int carnet;
     
-    public User_Menu(EDD.Hash hash, int carnet){
+    public User_TreesB(EDD.Hash hash, int carnet){
         this.hash = hash;
         this.carnet = carnet;
-        setUserMenu();
+        setUserTreesB();
         int disp = hash.getDispercion(carnet);
         EDD.Usuario usuario = hash.getUsuario(carnet, disp);
         lbl0.setText("Nombre:   " + usuario.getNombre());
-        lbl1.setText("Apellido: " + usuario.getApellido());
+        lbl1.setText("Apellido: " + usuario.getApellido());  
     }
     
     @Override
     protected void setBtn0(){
         clear();
-        uT = new User_Trees(hash, carnet);
+        uTBI = new User_TreesB_Insertar(hash, carnet);
     }
     protected void setBtn1(){
         clear();
-        uM = new User_Matriz(hash, carnet);
+        uTBE = new User_TreesB_Eliminar(hash, carnet);
     }
     protected void setBtn2(){
         clear();
-        uA = new User_Algoritmos(hash, carnet);
+        uT = new User_Trees(hash, carnet);
     }
-    protected void setBtn3(){
-        clear();
-        lgn = new Frame.Login(hash);
-    }
-    
 }

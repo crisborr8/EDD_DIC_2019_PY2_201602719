@@ -29,9 +29,10 @@ public class Login extends Frame{
                 EDD.Usuario usuario = hash.getUsuario(carnet, dispercion);
                 if(usuario == null)
                     lbl3.setText("Datos incorrectos");
-                else
-                    clear();
-                    uM = new Usuario.User_Menu(hash, usr, cnt);
+                else{
+                    frm.setVisible(false);
+                    uM = new Usuario.User_Menu(hash, carnet);
+                }
             }catch(Exception ex){
                 lbl3.setText("El usuario debe ser un numero");
             }
