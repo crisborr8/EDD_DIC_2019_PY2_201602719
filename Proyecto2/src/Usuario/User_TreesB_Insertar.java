@@ -11,7 +11,7 @@ public class User_TreesB_Insertar extends Frame.Frame{
         this.carnet = carnet;
         setUserTreesB_Insertar();
         int disp = hash.getDispercion(carnet);
-        EDD.Usuario usuario = hash.getUsuario(carnet, disp);
+        EDD.Hash.Usuario usuario = hash.getUsuario(carnet, disp, 0);
         lbl0.setText("Nombre:   " + usuario.getNombre());
         lbl1.setText("Apellido: " + usuario.getApellido());  
     }

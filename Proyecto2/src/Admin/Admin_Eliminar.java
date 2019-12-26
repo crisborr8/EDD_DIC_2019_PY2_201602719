@@ -15,7 +15,7 @@ public class Admin_Eliminar extends Frame.Frame{
     }
     
     private void cargarUsuarios(){
-        EDD.Usuario usuarios[] = hash.getTabla();
+        EDD.Hash.Usuario usuarios[] = hash.getTabla();
         for(int i = 0; i < usuarios.length; i++){
             if(usuarios[i] != null){
                 cb0.addItem(usuarios[i].getCarnet());
@@ -30,7 +30,7 @@ public class Admin_Eliminar extends Frame.Frame{
             try{
                 int carnet = Integer.parseInt(cb0.getSelectedItem().toString());
                 int dispercion = hash.getDispercion(carnet);
-                if(hash.eliminarUsuario(carnet, dispercion)){
+                if(hash.eliminarUsuario(carnet, dispercion, 0)){
                     cb0.removeAllItems();
                     cargarUsuarios();
                     lbl6.setText("Editado con exito");

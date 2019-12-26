@@ -15,7 +15,7 @@ public class Admin_Editar extends Frame.Frame{
     }
     
     private void cargarUsuarios(){
-        EDD.Usuario usuarios[] = hash.getTabla();
+        EDD.Hash.Usuario usuarios[] = hash.getTabla();
         for(int i = 0; i < usuarios.length; i++){
             if(usuarios[i] != null){
                 cb0.addItem(usuarios[i].getCarnet());
@@ -29,7 +29,7 @@ public class Admin_Editar extends Frame.Frame{
         if(cb0.getSelectedItem() != null){
             int carnet = Integer.parseInt(cb0.getSelectedItem().toString());
             int dispercion = hash.getDispercion(carnet);
-            EDD.Usuario usuario = hash.getUsuario(carnet, dispercion);
+            EDD.Hash.Usuario usuario = hash.getUsuario(carnet, dispercion, 0);
             txt0.setText(usuario.getNombre());
             txt1.setText(usuario.getApellido());
             txt2.setText(Integer.toString(carnet));
@@ -53,10 +53,10 @@ public class Admin_Editar extends Frame.Frame{
                     int carnet = Integer.parseInt(cb0.getSelectedItem().toString());
                     int dispercion = hash.getDispercion(carnet);
                     if(carnet != Integer.parseInt(txt2.getText().trim())){
-                        if(hash.eliminarUsuario(carnet, dispercion)){
+                        if(hash.eliminarUsuario(carnet, dispercion, 0)){
                             carnet = Integer.parseInt(txt2.getText().trim());
                             dispercion = hash.getDispercion(carnet);
-                            hash.ingresarUsuario(txt0.getText(), txt1.getText(), txt3.getText(), carnet, dispercion);
+                            hash.ingresarUsuario(txt0.getText(), txt1.getText(), txt3.getText(), carnet, dispercion, 0);
                             cb0.removeAllItems();
                             cargarUsuarios();
                             txt0.setText("");
@@ -69,7 +69,7 @@ public class Admin_Editar extends Frame.Frame{
                             lbl6.setText("Error al editar de la tabla");
                         }
                     }else{
-                        EDD.Usuario usuario = hash.getUsuario(carnet, dispercion);
+                        EDD.Hash.Usuario usuario = hash.getUsuario(carnet, dispercion, 0);
                         usuario.setUsuario(txt0.getText(), txt1.getText(), txt3.getText(), carnet);
                         cb0.removeAllItems();
                         cargarUsuarios();

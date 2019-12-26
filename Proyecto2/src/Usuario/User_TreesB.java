@@ -13,7 +13,7 @@ public class User_TreesB extends Frame.Frame{
         this.carnet = carnet;
         setUserTreesB();
         int disp = hash.getDispercion(carnet);
-        EDD.Usuario usuario = hash.getUsuario(carnet, disp);
+        EDD.Hash.Usuario usuario = hash.getUsuario(carnet, disp, 0);
         lbl0.setText("Nombre:   " + usuario.getNombre());
         lbl1.setText("Apellido: " + usuario.getApellido());  
     }

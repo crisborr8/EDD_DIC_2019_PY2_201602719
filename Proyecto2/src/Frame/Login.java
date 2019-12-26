@@ -26,7 +26,7 @@ public class Login extends Frame{
             try{
                 int carnet = Integer.parseInt(usr);
                 int dispercion = hash.getDispercion(carnet);
-                EDD.Usuario usuario = hash.getUsuario(carnet, dispercion);
+                EDD.Hash.Usuario usuario = hash.getUsuario(carnet, dispercion, 0);
                 if(usuario == null)
                     lbl3.setText("Datos incorrectos");
                 else{

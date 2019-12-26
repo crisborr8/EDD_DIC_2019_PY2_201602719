@@ -12,7 +12,7 @@ public class Admin_Ver extends Frame.Frame{
     
     @Override
     protected void setBtn0(){
-        EDD.Usuario[] tablaHash = hash.getTabla();
+        EDD.Hash.Usuario[] tablaHash = hash.getTabla();
         for(int i = 0; i < tablaHash.length; i++){
             if(tablaHash[i] != null){
                 System.out.println("-->" + tablaHash[i].getNombre() + " " +

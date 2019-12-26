@@ -4,6 +4,8 @@ public class User_TreesAVL_Recorrer extends Frame.Frame{
 
     User_TreesAVL uTA;
     EDD.Hash hash;
+    EDD.ArbolAVL.Nodo raiz;
+    Json.Abrir aB;
     int carnet;
     
     public User_TreesAVL_Recorrer(EDD.Hash hash, int carnet){
@@ -11,7 +13,7 @@ public class User_TreesAVL_Recorrer extends Frame.Frame{
         this.carnet = carnet;
         setUserTreesAVL_Recorrer();
         int disp = hash.getDispercion(carnet);
-        EDD.Usuario usuario = hash.getUsuario(carnet, disp);
+        EDD.Hash.Usuario usuario = hash.getUsuario(carnet, disp, 0);
         lbl0.setText("Nombre:   " + usuario.getNombre());
         lbl1.setText("Apellido: " + usuario.getApellido());  
         rb0.setSelected(true);
@@ -43,7 +45,8 @@ public class User_TreesAVL_Recorrer extends Frame.Frame{
         }
     }
     protected void setBtn0(){
-        
+        aB = new Json.Abrir();
+        raiz = aB.abrirTreeAVL();
     }
     protected void setBtn1(){
         
