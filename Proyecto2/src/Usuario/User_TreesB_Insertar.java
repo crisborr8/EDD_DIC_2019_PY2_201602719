@@ -4,6 +4,8 @@ public class User_TreesB_Insertar extends Frame.Frame{
     
     User_TreesB uTB;
     EDD.Hash hash;
+    EDD.ArbolB.Nodo raiz;
+    Json.Abrir aB;
     int carnet;
     
     public User_TreesB_Insertar(EDD.Hash hash, int carnet){
@@ -18,7 +20,8 @@ public class User_TreesB_Insertar extends Frame.Frame{
     
     @Override
     protected void setBtn0(){
-        
+        aB = new Json.Abrir();
+        raiz = aB.abrirTreeB();
     }
     protected void setBtn1(){
         

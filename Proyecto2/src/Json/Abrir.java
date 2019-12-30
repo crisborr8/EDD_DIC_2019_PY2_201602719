@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Abrir {
+public class Abrir{
     
     public String getPath(){
         String path = "";
@@ -89,10 +89,11 @@ public class Abrir {
         return hash;
     }
     
-    public ArbolAVL.Nodo abrirTreeAVL(){
+    public int[] abrirTreeAVL(){
         String path = getPath();
-        ArbolAVL.Nodo raiz = null;
-        ArbolAVL avl = new ArbolAVL();
+        int valor[] = null;
+        int aux[];
+        int i;
         try{
             JsonFactory jsonFactory = new JsonFactory();
             JsonParser jsonParser = jsonFactory.createParser(new File(path));
@@ -116,7 +117,57 @@ public class Abrir {
                             if(contador == 1){
                                 contador = contadorAux = 0;
                                 System.out.println(numero);
-                                raiz = avl.Insertar(raiz, numero);
+                                if(valor == null) valor = new int[0];
+                                aux = new int[valor.length + 1];
+                                for(i = 0; i < valor.length; i++){
+                                    aux[i] = valor[i];
+                                }
+                                aux[i] = numero;
+                                valor = new int[aux.length];
+                                valor = aux;
+                            }
+                            if(contadorAux > 0){
+                                jsonParser.nextToken();
+                            }
+                        }
+                    }
+                }
+            }
+        }catch(JsonParseException e){
+            System.out.println("Error al leer el json" + e);
+        }catch(IOException e){
+            System.out.println("Error al abrir el archivo");
+        }
+        return valor;
+    }
+    public ArbolB.Nodo abrirTreeB(){
+        String path = getPath();
+        ArbolB.Nodo raiz = null;
+        ArbolB b = new ArbolB();
+        try{
+            JsonFactory jsonFactory = new JsonFactory();
+            JsonParser jsonParser = jsonFactory.createParser(new File(path));
+            int numero, contador, contadorAux;
+            String campo;
+            while(jsonParser.nextToken() != JsonToken.END_OBJECT){
+                campo = jsonParser.getCurrentName();
+                if("Input".equals(campo)){
+                    jsonParser.nextToken();
+                    while(jsonParser.nextToken() != JsonToken.END_ARRAY){
+                        contador = contadorAux = numero = 0;
+                        while(jsonParser.nextToken() != JsonToken.END_OBJECT){
+                            campo = jsonParser.getCurrentName();
+                            if("num".equals(campo)){
+                                jsonParser.nextToken();
+                                numero = jsonParser.getIntValue();
+                                contador++;
+                            }else{
+                                contadorAux++;
+                            }
+                            if(contador == 1){
+                                contador = contadorAux = 0;
+                                System.out.println(numero);
+                                raiz = b.Insertar(raiz, numero);
                             }
                             if(contadorAux > 0){
                                 jsonParser.nextToken();
@@ -132,5 +183,4 @@ public class Abrir {
         }
         return raiz;
     }
-    
 }

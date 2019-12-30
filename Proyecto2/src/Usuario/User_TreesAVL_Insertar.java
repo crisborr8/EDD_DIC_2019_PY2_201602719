@@ -1,12 +1,16 @@
 package Usuario;
 
+import EDD.ArbolAVL;
+
 public class User_TreesAVL_Insertar extends Frame.Frame{
     
     User_TreesAVL uTA;
     EDD.Hash hash;
-    EDD.ArbolAVL.Nodo raiz;
+    ArbolAVL avl;
+    ArbolAVL.Nodo raiz;
     Json.Abrir aB;
     int carnet;
+    int[] valores;
     
     public User_TreesAVL_Insertar(EDD.Hash hash, int carnet){
         this.hash = hash;
@@ -21,13 +25,27 @@ public class User_TreesAVL_Insertar extends Frame.Frame{
     @Override
     protected void setBtn0(){
         aB = new Json.Abrir();
-        raiz = aB.abrirTreeAVL();
+        avl = new ArbolAVL();
+        valores = aB.abrirTreeAVL();
+        raiz = null;
+        avl.setRaiz(raiz);
+        avl.setValores(valores);
+        avl.setAutomatico(chb0.isSelected());
     }
     protected void setBtn1(){
-        
+        avl.setAutomatico(chb0.isSelected());
+        if(!chb0.isSelected()){
+            avl.setContinuar(true);
+            raiz = avl.getRaiz();
+        }
     }
     protected void setBtn2(){
-        
+        avl.setAutomatico(chb0.isSelected());
+        if(valores != null){
+            if(!avl.isAlive()) avl.start();
+            else avl.setContinuar(true);
+            raiz = avl.getRaiz();
+        }
     }
     protected void setBtn3(){
         clear();

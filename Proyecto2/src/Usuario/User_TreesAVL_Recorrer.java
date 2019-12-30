@@ -45,8 +45,7 @@ public class User_TreesAVL_Recorrer extends Frame.Frame{
         }
     }
     protected void setBtn0(){
-        aB = new Json.Abrir();
-        raiz = aB.abrirTreeAVL();
+        
     }
     protected void setBtn1(){
         

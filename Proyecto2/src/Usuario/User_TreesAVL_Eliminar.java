@@ -20,8 +20,7 @@ public class User_TreesAVL_Eliminar extends Frame.Frame{
     
     @Override
     protected void setBtn0(){
-        aB = new Json.Abrir();
-        raiz = aB.abrirTreeAVL();
+        
     }
     protected void setBtn1(){
         
