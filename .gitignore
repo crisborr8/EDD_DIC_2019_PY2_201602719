@@ -3,3 +3,7 @@
 *.properties
 *.mf
 /Proyecto2/build/
+*.dot
+*.png
+*.png
+*.dot

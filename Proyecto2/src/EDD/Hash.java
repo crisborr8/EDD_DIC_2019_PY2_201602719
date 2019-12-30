@@ -127,6 +127,16 @@ public class Hash {
     //**************************************************************************
     //**************************************************************************
     //BUSQUEDA DE LA TABLA HASH
+    public int getDispExacta(int carnet, int dispercion, int i){
+        if(tablaHash[dispercion].getCarnet() == carnet) return dispercion;
+        else{
+            dispercion = (carnet % 7 + 1) * i;    
+            while(dispercion >= tablaHash.length){
+                dispercion -= tablaHash.length;
+            }
+            return getDispExacta(carnet, dispercion, ++i);
+        }
+    }
     public Usuario getUsuario(int carnet, int dispercion, int i){
         if(tablaHash[dispercion] == null) return null;
         else if(tablaHash[dispercion].getCarnet() == carnet) return tablaHash[dispercion];
