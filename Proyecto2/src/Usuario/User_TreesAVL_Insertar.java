@@ -31,10 +31,11 @@ public class User_TreesAVL_Insertar extends Frame.Frame{
         avl.setRaiz(raiz);
         avl.setValores(valores);
         avl.setAutomatico(chb0.isSelected());
+        avl.setTipo(0);
     }
     protected void setBtn1(){
         avl.setAutomatico(chb0.isSelected());
-        if(!chb0.isSelected()){
+        if(!chb0.isSelected() && valores != null && avl.isAlive()){
             avl.setContinuar(true);
             raiz = avl.getRaiz();
         }

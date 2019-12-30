@@ -10,6 +10,9 @@ public class ArbolAVL extends Thread{
     private boolean automatico;
     private boolean continuar;
     private Nodo raiz;
+    private int tipo;
+    private int num;
+    private int tipoRec;
     
     public void setAutomatico(boolean automatico) { this.automatico = automatico; }
     
@@ -42,13 +45,56 @@ public class ArbolAVL extends Thread{
     public void setRaiz(Nodo raiz) { this.raiz = raiz; }
     public void setValores(int valores[]) { this.valores = valores; }
     public void setContinuar(boolean continuar) { this.continuar = continuar; }
+    public void setTipo(int tipo) { this.tipo = tipo; }
+    public void setTipoRec(int tipoRec) { this.tipoRec = tipoRec; }
+    public void setNum(int num) { this.num = num; }
+    public ArbolAVL(){
+        tipo = -1;
+    }
     
     public void run(){
         System.out.println("Iniciando");
         graficar = new Grafica.Graficar();
-        for(int i = 0; i < valores.length; i++){
-            System.out.println("ingresado: " + valores[i]);
-            raiz = Insertar(valores[i]);
+        switch(tipo){
+            case 0:
+                for(int i = 0; i < valores.length; i++){
+                    System.out.println("ingresado: " + valores[i]);
+                    raiz = Insertar(valores[i]);
+                }
+            break;
+            case 1:
+                boolean eliminado = true;
+                while(eliminado){
+                    if(continuar){
+                        System.out.println("---eliminando: " + num);
+                        raiz = Eliminar(raiz, num);
+                        graficar("");
+                        continuar = false;
+                    }
+                    esperar(10);
+                }
+            break;
+            case 2:
+                boolean recorrido = true;
+                while(recorrido){
+                    if(continuar){
+                        Limpiar_Nodos(raiz);
+                        if(tipoRec == 0){
+                            System.out.println("---recorriendo: preorden");
+                            Preorden_rec(raiz);
+                        }else if(tipoRec == 1){
+                            System.out.println("---recorriendo: inorden");
+                            Inorden_rec(raiz);
+                        }else{
+                            System.out.println("---recorriendo: postorden");
+                            Postorden_rec(raiz);
+                        }
+                        graficar("");
+                        continuar = false;
+                  }  
+                  esperar(10);
+                }
+            break;
         }
     }
     
@@ -102,40 +148,173 @@ public class ArbolAVL extends Thread{
         else return null;
     }
     private Nodo Eliminar_rec(Nodo act, int num){
-        if(act.getNum() == num) act = null;
-        else if(num < act.getNum()) act = Eliminar_rec(act.getIzq(), num);
-        else act = Eliminar_rec(act.getDer(), num);
-        if(act != null){
+        act.setT0(true);
+        graficar("");
+        if(act.getNum() == num){
+            if(act.getIzq() != null){
+                if(act.getIzq().getDer() == null){
+                    act.getIzq().setT1(true);
+                    graficar("");
+                    act.getIzq().setDer(act.getDer());
+                    act = act.getIzq();
+                }else{
+                    Nodo auxAnt = getIzqDer(act.getIzq());
+                    Nodo aux = auxAnt.getDer();
+                    aux.setT1(true);
+                    graficar("");
+                    aux.setDer(act.getDer());
+                    auxAnt.setDer(aux.getIzq());
+                    aux.setIzq(act.getIzq());
+                    act = aux;
+                    act.setIzq(ordenarNiveles(act.getIzq()));
+                }
+                act.setT1(false);
+            }
+            else if(act.getDer() != null){
+                if(act.getDer().getIzq() == null){
+                    act.getDer().setT1(true);
+                    graficar("");
+                    act.getDer().setIzq(act.getIzq());
+                    act = act.getDer();
+                }else{
+                    Nodo auxAnt = getDerIzq(act.getDer());
+                    Nodo aux = auxAnt.getIzq();
+                    aux.setT1(true);
+                    graficar("");
+                    aux.setIzq(act.getIzq());
+                    auxAnt.setIzq(aux.getIzq());
+                    aux.setIzq(act.getIzq());
+                    act = aux;
+                    act.setDer(ordenarNiveles(act.getDer()));
+                }
+                act.setT1(false);
+            }
+            else{
+                return null;
+            }
+        }
+        else if(num < act.getNum() && act.getIzq() != null){
+            act.setT0(false);
+            act.setIzq(Eliminar_rec(act.getIzq(), num));
+        }
+        else if(act.getDer() != null) {
+            act.setT0(false);
+            act.setDer(Eliminar_rec(act.getDer(), num));
+        }
+        if(act.getDer() != null || act.getIzq() != null){
+            act.setT0(true);
+            graficar("");
             setAltura(act);
             int dif = getFacEqu(act);
-            if(dif <= -2) act = despIzq(act);
-            else if(2 <= dif) act = despDer(act);
+            System.out.println("--->dif: " + dif + ", en: " + act.getNum());
+            if(dif <= -2) act = despDer(act);
+            else if(2 <= dif) act = despIzq(act);
             setAltura(act);
         }
+        act.setT0(false);
+        return act;
+    }
+    private Nodo getIzqDer(Nodo act){
+        if(act.getDer().getDer() == null) return act;
+        else return getIzqDer(act.getDer());
+    }
+    private Nodo getDerIzq(Nodo act){
+        if(act.getIzq().getIzq() == null) return act;
+        else return getDerIzq(act.getIzq());
+    }
+    private Nodo ordenarNiveles(Nodo act){
+        if(act.getIzq() != null) act.setIzq(ordenarNiveles(act.getIzq()));
+        if(act.getDer() != null) act.setDer(ordenarNiveles(act.getDer()));
+        setAltura(act);
+        int dif = getFacEqu(act);
+        System.out.println("--->dif: " + dif + ", en: " + act.getNum());
+        if(dif <= -2) act = despDer(act);
+        else if(2 <= dif) act = despIzq(act);
+        setAltura(act);
         return act;
     }
     
-    public void Recorrido(Nodo raiz, int tipo){
-        if(raiz != null){
-            if(tipo == 0) Preorden_rec(raiz);
-            else if (tipo == 1) Inorden_rec(raiz);
-            else if (tipo == 2) Postorden_rec(raiz);
-        }
+    private void Limpiar_Nodos(Nodo act){
+        act.setT0(false);
+        act.setT1(false);
+        act.setT2(false);
+        if(act.getIzq() != null) Limpiar_Nodos(act.getIzq());
+        if(act.getDer() != null) Limpiar_Nodos(act.getDer());
     }
     private void Preorden_rec(Nodo act){
-        System.out.println(act.getNum());
-        if(act.getIzq() != null) Preorden_rec(act.getIzq());
-        if(act.getDer() != null) Preorden_rec(act.getDer());
+        act.setT2(true);
+        graficar("Preorden;\n");
+        act.setT2(false);
+        act.setT0(true);
+        if(act.getIzq() != null){
+            Preorden_rec(act.getIzq());
+            act.setT0(false);
+            act.setT2(true);
+            graficar("Preorden;\n");
+            act.setT2(false);
+            act.setT0(true);
+        }
+        if(act.getDer() != null){
+            Preorden_rec(act.getDer());
+            act.setT0(false);
+            act.setT2(true);
+            graficar("Preorden;\n");
+            act.setT2(false);
+            act.setT0(true);
+        }
+        act.setT2(false);
+        act.setT0(true);
     }
     private void Inorden_rec(Nodo act){
-        if(act.getIzq() != null) Preorden_rec(act.getIzq());
-        System.out.println(act.getNum());
-        if(act.getDer() != null) Preorden_rec(act.getDer());
+        act.setT2(true);
+        graficar("Inorden;\n");
+        act.setT2(false);
+        act.setT1(true);
+        if(act.getIzq() != null){
+            Inorden_rec(act.getIzq());
+            act.setT1(false);
+            act.setT2(true);
+            graficar("Inorden;\n");
+            act.setT2(false);
+            act.setT0(true);
+        }
+        if(act.getDer() != null){
+            Inorden_rec(act.getDer());
+            act.setT1(false);
+            act.setT0(false);
+            act.setT2(true);
+            graficar("Inorden;\n");
+            act.setT2(false);
+            act.setT0(true);
+        }
+        act.setT2(false);
+        act.setT1(false);
+        act.setT0(true);
     }
     private void Postorden_rec(Nodo act){
-        if(act.getIzq() != null) Preorden_rec(act.getIzq());
-        if(act.getDer() != null) Preorden_rec(act.getDer());
-        System.out.println(act.getNum());
+        act.setT2(true);
+        graficar("Postorden;\n");
+        act.setT2(false);
+        act.setT1(true);
+        if(act.getIzq() != null){
+            Postorden_rec(act.getIzq());
+            act.setT1(false);
+            act.setT2(true);
+            graficar("Postorden;\n");
+            act.setT2(false);
+            act.setT1(true);
+        }
+        if(act.getDer() != null){
+            Postorden_rec(act.getDer());
+            act.setT1(false);
+            act.setT2(true);
+            graficar("Postorden;\n");
+            act.setT2(false);
+            act.setT0(true);
+        }
+        act.setT2(false);
+        act.setT1(false);
+        act.setT0(true);
     }
     
     private void setAltura(Nodo act){
@@ -153,7 +332,8 @@ public class ArbolAVL extends Thread{
     }
     private int getFacEqu(Nodo act){
         int dif = 0;
-        if(act.getIzq() == null) dif = -act.getDer().getAlt() - 1;
+        if(act.getIzq() == null && act.getDer() == null) dif = 0;
+        else if(act.getIzq() == null) dif = -act.getDer().getAlt() - 1;
         else if(act.getDer() == null) dif = act.getIzq().getAlt() + 1;
         else dif = act.getIzq().getAlt() - act.getDer().getAlt();
         return dif;
@@ -214,15 +394,17 @@ public class ArbolAVL extends Thread{
         return act;
     }
     
-    private void graficar(String extra){
-        graficar.Cerrar();
-        esperar(5);
-        if(raiz != null) graficar.Mostrar(extra + graficar.getCodigo_AVL(raiz));
-        if(automatico) esperar(30);
-        else{
-            continuar = false;
-            while(!continuar){
-                esperar(10);
+    public void graficar(String extra){
+        if(tipo != -1){
+            graficar.Cerrar();
+            esperar(5);
+            if(raiz != null) graficar.Mostrar(extra + graficar.getCodigo_AVL(raiz));
+            if(automatico) esperar(25);
+            else{
+                continuar = false;
+                while(!continuar){
+                    esperar(10);
+                }
             }
         }
     }
