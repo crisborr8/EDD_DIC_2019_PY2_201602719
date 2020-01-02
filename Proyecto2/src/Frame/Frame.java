@@ -1,24 +1,19 @@
 package Frame;
 
 import java.awt.Color;
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public class Frame {
     
-    
-    //****************************************************************************
-    //****************************************************************************
-    //SETEO DE COMPONENTES A UTILIZAR
-    protected JFrame frm = new JFrame();
-    protected JPasswordField psw = new JPasswordField();
+    //**************************************************************************
+    //**************************************************************************
+    //COMPONENTES A UTILIZAR
+    protected JFrame frame = new JFrame();
     protected JComboBox cb0 = new JComboBox();
     protected JCheckBox chb0 = new JCheckBox();
-    
-    protected JRadioButton rb0 = new JRadioButton();
-    protected JRadioButton rb1 = new JRadioButton();
-    protected JRadioButton rb2 = new JRadioButton();
+    protected JPasswordField psw = new JPasswordField();
     
     protected JLabel lbl0 = new JLabel("", SwingConstants.CENTER);
     protected JLabel lbl1 = new JLabel("", SwingConstants.CENTER);
@@ -40,34 +35,35 @@ public class Frame {
     protected JButton btn3 = new JButton();
     protected JButton btn4 = new JButton();
     
+    protected JRadioButton rb0 = new JRadioButton();
+    protected JRadioButton rb1 = new JRadioButton();
+    protected JRadioButton rb2 = new JRadioButton();
     
-    //****************************************************************************
-    //****************************************************************************
-    //SETEO DEL FRAME (TAMAÑO, POSICION, LIMPIAR, ETC...
+    protected String[] datos;
+    //**************************************************************************
+    //**************************************************************************
+    //FRAME-----
     public Frame(){
-        frm.setLayout(null);
-        frm.setVisible(true);
-        frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Comportamiento();
-    }    
-    protected void setFrame(int x, int y){
-        frm.pack();
-        frm.setSize(x + 16, y);
-        frm.setLocationRelativeTo(null);
     }
-    protected void clear(){
-        frm.setVisible(false);
-        frm.dispose();
+    public void setVisible() { frame.setVisible(true); }
+    public void setDatos(String[] datos){ 
+        this.datos = datos;
+        lbl0.setText("Nombre:    " + datos[1]);
+        lbl1.setText("Apellidos: " + datos[2]);
     }
-    private void clean(){
-        frm.getContentPane().removeAll();
-        frm.repaint();
+    private void setPosicion(int x, int y){
+        frame.pack();
+        frame.setSize(x + 16, y + 60);
+        frame.setLocationRelativeTo(null);
     }
     
-    
-    //****************************************************************************
-    //****************************************************************************
-    //SETEO DE COMPONENTES EN FRAMES PARA OTRAS PESTAÑAS
+    //**************************************************************************
+    //**************************************************************************
+    //LOGIN
     protected void setLogin(){
         lbl0.setText("Bienvenido");
         lbl1.setText("Usuario");
@@ -84,69 +80,54 @@ public class Frame {
         txt0.setBounds(75, 100, 150, 20);
         lbl2.setBounds(75, 170, 150, 20);
         psw.setBounds (75, 200, 150, 20);
-        lbl3.setBounds(75, 230, 150, 20);
+        lbl3.setBounds( 0, 230, 300, 20);
         btn0.setBounds(75, 275, 150, 20);
         
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(txt0);
-        frm.add(lbl2);
-        frm.add(psw);
-        frm.add(lbl3);
-        frm.add(btn0);
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(txt0);
+        frame.add(lbl2);
+        frame.add(psw);
+        frame.add(lbl3);
+        frame.add(btn0);
         
-        setFrame(300,400);
+        setPosicion(300,300);
     }
-    //SETEO DE COMPONENTES PARA ADMINISTRADOR
-    protected void setAdminMenu(){
+       
+    //**************************************************************************
+    //**************************************************************************
+    //ADMIN
+    protected void setAdmin(){
         lbl0.setText("Administrador");
         lbl1.setText("Menu principal");
+        lbl2.setText("");
         btn0.setText("Cargar usuarios");
         btn1.setText("Editar usuarios");
         btn2.setText("Eliminar usuarios");
         btn3.setText("Ver usuarios");
         btn4.setText("Salir");
         
-        lbl0.setBounds(200, 20, 100, 20);
-        lbl1.setBounds(200, 50, 100, 20);
-        btn0.setBounds(75, 75, 150, 20);
-        btn1.setBounds(275, 75, 150, 20);
-        btn2.setBounds(75, 120, 150, 20);
-        btn3.setBounds(275, 120, 150, 20);
-        btn4.setBounds(200, 175, 100, 20);
-        
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(btn0);
-        frm.add(btn1);
-        frm.add(btn2);
-        frm.add(btn3);
-        frm.add(btn4);
-        
-        setFrame(500,250);
-    }
-    protected void setAdminCargar(){
-        lbl0.setText("Administrador");
-        lbl1.setText("Carga de usuarios");
-        lbl2.setText("");
-        btn0.setText("Cargar usuarios");
-        btn1.setText("Regresar");
-        
         lbl2.setForeground(Color.red);
         
         lbl0.setBounds(200, 20, 100, 20);
-        lbl1.setBounds(175, 50, 150, 20);
+        lbl1.setBounds(200, 50, 100, 20);
         lbl2.setBounds(200, 80, 100, 20);
-        btn0.setBounds(75, 110, 150, 20);
-        btn1.setBounds(275, 110, 150, 20);
+        btn0.setBounds(75, 105, 150, 20);
+        btn1.setBounds(275, 105, 150, 20);
+        btn2.setBounds(75, 150, 150, 20);
+        btn3.setBounds(275, 150, 150, 20);
+        btn4.setBounds(200, 205, 100, 20);
         
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(lbl2);
-        frm.add(btn0);
-        frm.add(btn1);
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
+        frame.add(btn3);
+        frame.add(btn4);
         
-        setFrame(500,200);
+        setPosicion(500,225);
     }
     protected void setAdminEditar(){
         lbl0.setText("Administrador");
@@ -182,23 +163,23 @@ public class Frame {
         btn1.setBounds(100, 270, 100, 20);
         btn2.setBounds(300, 270, 100, 20);
         
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(cb0);
-        frm.add(btn0);
-        frm.add(lbl2);
-        frm.add(lbl3);
-        frm.add(txt0);
-        frm.add(txt1);
-        frm.add(lbl4);
-        frm.add(lbl5);
-        frm.add(txt2);
-        frm.add(txt3);
-        frm.add(lbl6);
-        frm.add(btn1);
-        frm.add(btn2);
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(cb0);
+        frame.add(btn0);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(txt0);
+        frame.add(txt1);
+        frame.add(lbl4);
+        frame.add(lbl5);
+        frame.add(txt2);
+        frame.add(txt3);
+        frame.add(lbl6);
+        frame.add(btn1);
+        frame.add(btn2);
         
-        setFrame(500,350);
+        setPosicion(500,310);
     }
     protected void setAdminEliminar(){
         lbl0.setText("Administrador");
@@ -213,39 +194,23 @@ public class Frame {
         lbl1.setBounds(200, 50, 100, 20);
         cb0.setBounds(50, 80, 200, 20);
         btn0.setBounds(300, 80, 100, 20);
-        lbl2.setBounds(150, 100, 200, 20);
+        lbl2.setBounds(150, 110, 200, 20);
         btn1.setBounds(200, 140, 100, 20);
         
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(cb0);
-        frm.add(btn0);
-        frm.add(lbl2);
-        frm.add(btn1);
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(cb0);
+        frame.add(btn0);
+        frame.add(lbl2);
+        frame.add(btn1);
         
-        setFrame(500,220);
+        setPosicion(500,160);
     }
-    protected void setAdminVer(){
-        lbl0.setText("Administrador");
-        lbl1.setText("Ver usuarios");
-        btn0.setText("Ver usuarios");
-        btn1.setText("Regresar");
-        
-        
-        lbl0.setBounds(200, 20, 100, 20);
-        lbl1.setBounds(200, 50, 100, 20);
-        btn0.setBounds(75, 75, 150, 20);
-        btn1.setBounds(275, 75, 150, 20);
-        
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(btn0);
-        frm.add(btn1);
-        
-        setFrame(500,200);
-    }
-    //SETEO DE COMPONENTES PARA USUARIO
-    protected void setUserMenu(){
+    
+    //**************************************************************************
+    //**************************************************************************
+    //USUARIO
+    protected void setUserInicio(){
         lbl0.setText("Nombre:   ");
         lbl1.setText("Apellido: ");
         lbl2.setText("Usuario");
@@ -264,18 +229,18 @@ public class Frame {
         btn2.setBounds(150, 200, 200, 20);
         btn3.setBounds(200, 250, 100, 20);
         
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(lbl2);
-        frm.add(lbl3);
-        frm.add(btn0);
-        frm.add(btn1);
-        frm.add(btn2);
-        frm.add(btn3);
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
+        frame.add(btn3);
         
-        setFrame(500,350);
+        setPosicion(500,300);
     }
-    protected void setUserTrees(){
+    protected void setUserArbol(){
         lbl0.setText("Nombre:   ");
         lbl1.setText("Apellido: ");
         lbl2.setText("Usuario");
@@ -292,17 +257,21 @@ public class Frame {
         btn1.setBounds(300, 130, 100, 20);
         btn2.setBounds(200, 160, 100, 20);
         
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(lbl2);
-        frm.add(lbl3);
-        frm.add(btn0);
-        frm.add(btn1);
-        frm.add(btn2);
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
         
-        setFrame(500, 250);
+        setPosicion(500, 200);
     }
-    protected void setUserTreesAVL(){
+    
+    //**************************************************************************
+    //**************************************************************************
+    //ARBOL AVL
+    protected void setAVL(){
         lbl0.setText("Nombre:   ");
         lbl1.setText("Apellido: ");
         lbl2.setText("Usuario");
@@ -321,18 +290,18 @@ public class Frame {
         btn2.setBounds(200, 160, 100, 20);
         btn3.setBounds(200, 190, 100, 20);
         
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(lbl2);
-        frm.add(lbl3);
-        frm.add(btn0);
-        frm.add(btn1);
-        frm.add(btn2);
-        frm.add(btn3);
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
+        frame.add(btn3);
         
-        setFrame(500, 280);
+        setPosicion(500, 220);
     }
-    protected void setUserTreesAVL_Insertar(){
+    protected void setAVL_Insertar(){
         lbl0.setText("Nombre:   ");
         lbl1.setText("Apellido: ");
         lbl2.setText("Usuario");
@@ -358,22 +327,22 @@ public class Frame {
         btn2.setBounds(325, 220, 150, 20);
         btn3.setBounds(175, 250, 150, 20);
         
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(lbl2);
-        frm.add(lbl3);
-        frm.add(lbl4);
-        frm.add(lbl5);
-        frm.add(lbl6);
-        frm.add(chb0);
-        frm.add(btn0);
-        frm.add(btn1);
-        frm.add(btn2);
-        frm.add(btn3);
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(lbl4);
+        frame.add(lbl5);
+        frame.add(lbl6);
+        frame.add(chb0);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
+        frame.add(btn3);
         
-        setFrame(500, 350);
+        setPosicion(500, 280);
     }
-    protected void setUserTreesAVL_Eliminar(){
+    protected void setAVL_Eliminar(){
         lbl0.setText("Nombre:   ");
         lbl1.setText("Apellido: ");
         lbl2.setText("Usuario");
@@ -401,23 +370,23 @@ public class Frame {
         btn2.setBounds(325, 220, 150, 20);
         btn3.setBounds(175, 250, 150, 20);
         
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(lbl2);
-        frm.add(lbl3);
-        frm.add(lbl4);
-        frm.add(lbl5);
-        frm.add(lbl6);
-        frm.add(chb0);
-        frm.add(btn0);
-        frm.add(btn1);
-        frm.add(txt0);
-        frm.add(btn2);
-        frm.add(btn3);
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(lbl4);
+        frame.add(lbl5);
+        frame.add(lbl6);
+        frame.add(chb0);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(txt0);
+        frame.add(btn2);
+        frame.add(btn3);
         
-        setFrame(500, 350);
+        setPosicion(500, 280);
     }
-    protected void setUserTreesAVL_Recorrer(){
+    protected void setAVL_Recorrer(){
         lbl0.setText("Nombre:   ");
         lbl1.setText("Apellido: ");
         lbl2.setText("Usuario");
@@ -449,25 +418,29 @@ public class Frame {
         btn2.setBounds(325, 220, 150, 20);
         btn3.setBounds(175, 250, 150, 20);
         
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(lbl2);
-        frm.add(lbl3);
-        frm.add(lbl4);
-        frm.add(lbl5);
-        frm.add(rb0);
-        frm.add(lbl6);
-        frm.add(chb0);
-        frm.add(rb1);
-        frm.add(btn0);
-        frm.add(btn1);
-        frm.add(rb2);
-        frm.add(btn2);
-        frm.add(btn3);
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(lbl4);
+        frame.add(lbl5);
+        frame.add(rb0);
+        frame.add(lbl6);
+        frame.add(chb0);
+        frame.add(rb1);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(rb2);
+        frame.add(btn2);
+        frame.add(btn3);
         
-        setFrame(500, 350);
+        setPosicion(500, 280);
     }
-    protected void setUserTreesB(){
+    
+    //**************************************************************************
+    //**************************************************************************
+    //ARBOL B
+    protected void setB(){
         lbl0.setText("Nombre:   ");
         lbl1.setText("Apellido: ");
         lbl2.setText("Usuario");
@@ -484,17 +457,17 @@ public class Frame {
         btn1.setBounds(300, 130, 100, 20);
         btn2.setBounds(200, 160, 100, 20);
         
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(lbl2);
-        frm.add(lbl3);
-        frm.add(btn0);
-        frm.add(btn1);
-        frm.add(btn2);
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
         
-        setFrame(500, 250);
+        setPosicion(500, 190);
     }
-    protected void setUserTreesB_Insertar(){
+    protected void setB_Insertar(){
         lbl0.setText("Nombre:   ");
         lbl1.setText("Apellido: ");
         lbl2.setText("Usuario");
@@ -520,22 +493,22 @@ public class Frame {
         btn2.setBounds(325, 220, 150, 20);
         btn3.setBounds(175, 250, 150, 20);
         
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(lbl2);
-        frm.add(lbl3);
-        frm.add(lbl4);
-        frm.add(lbl5);
-        frm.add(lbl6);
-        frm.add(chb0);
-        frm.add(btn0);
-        frm.add(btn1);
-        frm.add(btn2);
-        frm.add(btn3);
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(lbl4);
+        frame.add(lbl5);
+        frame.add(lbl6);
+        frame.add(chb0);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
+        frame.add(btn3);
         
-        setFrame(500, 350);
+        setPosicion(500, 280);
     }
-    protected void setUserTreesB_Eliminar(){
+    protected void setB_Eliminar(){
         lbl0.setText("Nombre:   ");
         lbl1.setText("Apellido: ");
         lbl2.setText("Usuario");
@@ -563,125 +536,26 @@ public class Frame {
         btn2.setBounds(325, 220, 150, 20);
         btn3.setBounds(175, 250, 150, 20);
         
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(lbl2);
-        frm.add(lbl3);
-        frm.add(lbl4);
-        frm.add(lbl5);
-        frm.add(lbl6);
-        frm.add(chb0);
-        frm.add(btn0);
-        frm.add(btn1);
-        frm.add(txt0);
-        frm.add(btn2);
-        frm.add(btn3);
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(lbl4);
+        frame.add(lbl5);
+        frame.add(lbl6);
+        frame.add(chb0);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(txt0);
+        frame.add(btn2);
+        frame.add(btn3);
         
-        setFrame(500, 350);
-    }
-    protected void setUserMatriz(){
-        lbl0.setText("Nombre:   ");
-        lbl1.setText("Apellido: ");
-        lbl2.setText("Usuario");
-        lbl3.setText("Learning Graphs");
-        lbl4.setText("Matriz de Adyacencia");
-        lbl5.setText("Automatico");
-        lbl6.setText("No existe matriz");
-        lbl7.setText("Recorrido por:");
-        btn0.setText("Abrir .json");
-        btn1.setText("Siguiente paso");
-        btn2.setText("Iniciar matriz");
-        btn3.setText("Regresar");
-        rb0.setText("Anchura");
-        rb1.setText("Profundidad");
-        
-        lbl0.setBounds(0, 10, 200, 20);
-        lbl1.setBounds(0, 40, 200, 20);
-        lbl2.setBounds(200, 70, 100, 20);
-        lbl3.setBounds(175, 100, 150, 20);
-        lbl4.setBounds(150, 130, 200, 20);
-        lbl5.setBounds(50, 160, 100, 20);
-        lbl7.setBounds(200, 160, 100, 20);
-        lbl6.setBounds(350, 160, 100, 20);
-        chb0.setBounds(90, 180, 20, 20);
-        rb0.setBounds(200, 180, 100, 20);
-        btn0.setBounds(325, 190, 150, 20);
-        btn1.setBounds(25, 220, 150, 20);
-        rb1.setBounds(200, 200, 100, 20);
-        btn2.setBounds(325, 220, 150, 20);
-        btn3.setBounds(175, 250, 150, 20);
-        
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(lbl2);
-        frm.add(lbl3);
-        frm.add(lbl4);
-        frm.add(lbl5);
-        frm.add(lbl7);
-        frm.add(lbl6);
-        frm.add(chb0);
-        frm.add(rb0);
-        frm.add(btn0);
-        frm.add(btn1);
-        frm.add(rb1);
-        frm.add(btn2);
-        frm.add(btn3);
-        
-        setFrame(500, 350);
-    }
-    protected void setUserAlgoritmos(){
-        lbl0.setText("Nombre:   ");
-        lbl1.setText("Apellido: ");
-        lbl2.setText("Usuario");
-        lbl3.setText("Learning Sorting Algorithms");
-        lbl4.setText("Recorrer");
-        lbl5.setText("Automatico");
-        lbl6.setText("No existe arreglo");
-        btn0.setText("Abrir .json");
-        btn1.setText("Siguiente paso");
-        btn2.setText("Ordenamiento");
-        btn3.setText("Regresar");
-        rb0.setText("Burbuja");
-        rb1.setText("Insercion");
-        rb2.setText("Quicksort");
-        
-        lbl0.setBounds(0, 10, 200, 20);
-        lbl1.setBounds(0, 40, 200, 20);
-        lbl2.setBounds(200, 70, 100, 20);
-        lbl3.setBounds(125, 100, 250, 20);
-        lbl4.setBounds(175, 130, 150, 20);
-        lbl5.setBounds(50, 160, 100, 20);
-        rb0.setBounds(200, 160, 100, 20);
-        lbl6.setBounds(350, 160, 100, 20);
-        chb0.setBounds(90, 180, 20, 20);
-        rb1.setBounds(200, 180, 100, 20);
-        btn0.setBounds(325, 190, 150, 20);
-        btn1.setBounds(25, 220, 150, 20);
-        rb2.setBounds(200, 200, 100, 20);
-        btn2.setBounds(325, 220, 150, 20);
-        btn3.setBounds(175, 250, 150, 20);
-        
-        frm.add(lbl0);
-        frm.add(lbl1);
-        frm.add(lbl2);
-        frm.add(lbl3);
-        frm.add(lbl4);
-        frm.add(lbl5);
-        frm.add(rb0);
-        frm.add(lbl6);
-        frm.add(chb0);
-        frm.add(rb1);
-        frm.add(btn0);
-        frm.add(btn1);
-        frm.add(rb2);
-        frm.add(btn2);
-        frm.add(btn3);
-        
-        setFrame(500, 350);
+        setPosicion(500, 280);
     }
     
-    //****************************************************************************
-    //****************************************************************************
+    
+    //**************************************************************************
+    //**************************************************************************
     //SETEO DEL COMPORTAMIENTO DE LOS BOTONES
     private void Comportamiento(){
         rb0.addActionListener(new ActionListener() {
@@ -733,5 +607,4 @@ public class Frame {
     protected void setBtn2(){}
     protected void setBtn3(){}
     protected void setBtn4(){}
-    
 }

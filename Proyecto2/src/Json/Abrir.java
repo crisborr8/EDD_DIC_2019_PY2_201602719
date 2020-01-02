@@ -1,17 +1,16 @@
 package Json;
 
 import EDD.*;
-import com.fasterxml.jackson.core.*;
 import java.io.File;
-import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import com.fasterxml.jackson.core.*;
 
-public class Abrir{
+public class Abrir {
     
-    public String getPath(){
-        String path = "";
+    
+    private String getPath(){
         JFrame ventana = new JFrame();
         JFileChooser filechooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos json", "json");
@@ -20,167 +19,113 @@ public class Abrir{
         int result = filechooser.showOpenDialog(ventana);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = filechooser.getSelectedFile();
-            path = selectedFile.getAbsolutePath();
-            System.out.println("abierto");
-            System.out.println(path);
+            return selectedFile.getAbsolutePath();
         }
-        return path;
+        return null;
     }
     
-    public Hash abrirUsuarios(Hash hash){
-        String path = getPath();
+    //**************************************************************************
+    //**************************************************************************
+    //ABRIR USUARIOS
+    public Hash abrirUsuario(Hash hash){
         try{
-            JsonFactory jsonFactory = new JsonFactory();
-            JsonParser jsonParser = jsonFactory.createParser(new File(path));
+            int cont, contAux;
+            String campo;
+            String[] datos;
             String[] cadena;
-            String nombre = "";
-            String apellido = "";
-            String carnetAux = "";
-            String contraseña = "";
-            int carnet = 0;
-            int contador, contadorAux;
+            JsonFactory jsonFactory = new JsonFactory();
+            JsonParser jsonParser = jsonFactory.createParser(new File(getPath()));
             while(jsonParser.nextToken() != JsonToken.END_ARRAY){
-                contador = 0;
-                contadorAux = 0;
+                cont = contAux = 0;
+                datos = new String[4];
                 while(jsonParser.nextToken() != JsonToken.END_OBJECT){
-                    String campo = jsonParser.getCurrentName();
+                    campo = jsonParser.getCurrentName();
                     if("Nombre".equals(campo)){
                         jsonParser.nextToken();
-                        nombre = jsonParser.getText();
-                        contador++;
+                        datos[1] = jsonParser.getText();
+                        cont++;
                     }
                     if("Apellido".equals(campo)){
                         jsonParser.nextToken();
-                        apellido = jsonParser.getText();
-                        contador++;
+                        datos[2] = jsonParser.getText();
+                        cont++;
                     }
                     if("Carnet".equals(campo)){
                         jsonParser.nextToken();
                         cadena = jsonParser.getText().split("-");
-                        carnetAux = "";
+                        datos[0] = "";
                         for(String aux: cadena){
-                            carnetAux += aux;
+                            datos[0] += aux;
                         }
-                        carnet = Integer.parseInt(carnetAux);
-                        contador++;
+                        cont++;
                     }
                     if("Password".equals(campo)){
                         jsonParser.nextToken();
-                        contraseña = jsonParser.getText();
-                        contador++;
+                        datos[3] = jsonParser.getText();
+                        cont++;
                     }
-                    if(contador == 4){
-                        int dispercion = hash.getDispercion(carnet);
-                        hash.ingresarUsuario(nombre, apellido, contraseña, carnet, dispercion, 0);
-                        contador = 0;
+                    if(cont == 4){
+                        int disp = hash.getDisp(Integer.parseInt(datos[0]));
+                        hash.insertarUsuario(datos, disp, 0);
+                        cont = 0;
                     }
-                    if(contadorAux > 5){
+                    if(contAux > 5){
                         jsonParser.nextToken();
-                        contadorAux = 0;
+                        contAux = 0;
                     }
-                    contadorAux++;
+                    else contAux++;
                 }
             }
-        }catch(JsonParseException e){
-            System.out.println("Error al leer el json");
-        }catch(IOException e){
-            System.out.println("Error al abrir el archivo");
+        }catch (Exception ex){
+            System.out.println("Error en:\n-->" + ex);
         }
         return hash;
     }
     
-    public int[] abrirTreeAVL(){
-        String path = getPath();
-        int valor[] = null;
-        int aux[];
-        int i;
+    //**************************************************************************
+    //**************************************************************************
+    //ABRIR ARBOL
+    public int[] abrirArbol(){
+        int valor[] = new int[0];
         try{
             JsonFactory jsonFactory = new JsonFactory();
-            JsonParser jsonParser = jsonFactory.createParser(new File(path));
-            int numero, contador, contadorAux;
+            JsonParser jsonParser = jsonFactory.createParser(new File(getPath()));
+            int aux[], i, cont, contAux, num;
             String campo;
             while(jsonParser.nextToken() != JsonToken.END_OBJECT){
                 campo = jsonParser.getCurrentName();
                 if("Input".equals(campo)){
                     jsonParser.nextToken();
                     while(jsonParser.nextToken() != JsonToken.END_ARRAY){
-                        contador = contadorAux = numero = 0;
+                        cont = contAux = num = 0;
                         while(jsonParser.nextToken() != JsonToken.END_OBJECT){
                             campo = jsonParser.getCurrentName();
                             if("num".equals(campo)){
                                 jsonParser.nextToken();
-                                numero = jsonParser.getIntValue();
-                                contador++;
-                            }else{
-                                contadorAux++;
+                                num = jsonParser.getIntValue();
+                                cont++;
                             }
-                            if(contador == 1){
-                                contador = contadorAux = 0;
-                                System.out.println(numero);
-                                if(valor == null) valor = new int[0];
+                            if(cont == 1){
                                 aux = new int[valor.length + 1];
                                 for(i = 0; i < valor.length; i++){
                                     aux[i] = valor[i];
                                 }
-                                aux[i] = numero;
+                                aux[i] = num;
                                 valor = new int[aux.length];
                                 valor = aux;
+                                cont = 0;
                             }
-                            if(contadorAux > 0){
+                            if(contAux > 2){
                                 jsonParser.nextToken();
                             }
+                            else contAux++;
                         }
                     }
                 }
             }
-        }catch(JsonParseException e){
-            System.out.println("Error al leer el json" + e);
-        }catch(IOException e){
-            System.out.println("Error al abrir el archivo");
+        }catch(Exception ex){
+            System.out.println("Error en:\n-->" + ex);
         }
         return valor;
-    }
-    public ArbolB.Nodo abrirTreeB(){
-        String path = getPath();
-        ArbolB.Nodo raiz = null;
-        ArbolB b = new ArbolB();
-        try{
-            JsonFactory jsonFactory = new JsonFactory();
-            JsonParser jsonParser = jsonFactory.createParser(new File(path));
-            int numero, contador, contadorAux;
-            String campo;
-            while(jsonParser.nextToken() != JsonToken.END_OBJECT){
-                campo = jsonParser.getCurrentName();
-                if("Input".equals(campo)){
-                    jsonParser.nextToken();
-                    while(jsonParser.nextToken() != JsonToken.END_ARRAY){
-                        contador = contadorAux = numero = 0;
-                        while(jsonParser.nextToken() != JsonToken.END_OBJECT){
-                            campo = jsonParser.getCurrentName();
-                            if("num".equals(campo)){
-                                jsonParser.nextToken();
-                                numero = jsonParser.getIntValue();
-                                contador++;
-                            }else{
-                                contadorAux++;
-                            }
-                            if(contador == 1){
-                                contador = contadorAux = 0;
-                                System.out.println(numero);
-                                raiz = b.Insertar(raiz, numero);
-                            }
-                            if(contadorAux > 0){
-                                jsonParser.nextToken();
-                            }
-                        }
-                    }
-                }
-            }
-        }catch(JsonParseException e){
-            System.out.println("Error al leer el json" + e);
-        }catch(IOException e){
-            System.out.println("Error al abrir el archivo");
-        }
-        return raiz;
     }
 }

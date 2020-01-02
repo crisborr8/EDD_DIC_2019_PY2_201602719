@@ -1,40 +1,42 @@
 package Admin;
 
+import Frame.Frame;
 import java.awt.Color;
 
-public class Admin_Eliminar extends Frame.Frame{
+public class Admin_Eliminar extends Frame{
     
-    Admin_Menu aM;
-    Admin_Eliminar aEl;
+    Admin_Inicio adIn;
     EDD.Hash hash;
     
-    public Admin_Eliminar(EDD.Hash hash){
-        this.hash = hash;
+    public Admin_Eliminar(Admin_Inicio adIn){
+        this.adIn = adIn;
+        hash = adIn.getHash();
         setAdminEliminar();
         cargarUsuarios();
     }
-    
     private void cargarUsuarios(){
-        EDD.Hash.Usuario usuarios[] = hash.getTabla();
-        for(int i = 0; i < usuarios.length; i++){
-            if(usuarios[i] != null){
-                cb0.addItem(usuarios[i].getCarnet());
-            }
+        EDD.Hash.Nodo tabla[] = hash.getTabla();
+        for(int i = 0; i < tabla.length; i++){
+            if(tabla[i] != null) cb0.addItem(tabla[i].getDatos()[0]);
         }
     }
     
+    //**************************************************************************
+    //**************************************************************************
+    //COMPONENTES
+    //ELIMINAR
     @Override
     protected void setBtn0(){
-        lbl6.setForeground(Color.red);
+        lbl2.setForeground(Color.red);
         if(cb0.getSelectedItem() != null){
             try{
                 int carnet = Integer.parseInt(cb0.getSelectedItem().toString());
-                int dispercion = hash.getDispercion(carnet);
-                if(hash.eliminarUsuario(carnet, dispercion, 0)){
+                int disp = hash.getDisp(carnet);
+                if(hash.eliminarUsuario(carnet, disp, 0)){
                     cb0.removeAllItems();
                     cargarUsuarios();
-                    lbl6.setText("Editado con exito");
-                    lbl6.setForeground(Color.blue);
+                    lbl2.setText("Eliminado con exito");
+                    lbl2.setForeground(Color.blue);
                 }else
                     lbl2.setText("Error al eliminar");
             }catch(Exception ex){
@@ -43,8 +45,11 @@ public class Admin_Eliminar extends Frame.Frame{
         }else
             lbl2.setText("No existen usuarios a eliminar");
     }
+    //REGRESAR
+    @Override
     protected void setBtn1(){
-        clear();
-        aM = new Admin_Menu(hash);
+       adIn.setHash(hash);
+       adIn.setVisible();
+       frame.setVisible(false);
     }
 }

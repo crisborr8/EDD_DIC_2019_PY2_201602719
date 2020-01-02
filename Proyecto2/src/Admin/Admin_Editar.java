@@ -1,42 +1,47 @@
 package Admin;
 
+import Frame.Frame;
 import java.awt.Color;
 
-public class Admin_Editar extends Frame.Frame{
+public class Admin_Editar extends Frame{
     
-    Admin_Menu aM;
-    Admin_Editar aE;
+    Admin_Inicio adIn;
     EDD.Hash hash;
     
-    public Admin_Editar(EDD.Hash hash){
-        this.hash = hash;
+    public Admin_Editar(Admin_Inicio adIn){
+        this.adIn = adIn;
+        hash = adIn.getHash();
         setAdminEditar();
         cargarUsuarios();
     }
-    
     private void cargarUsuarios(){
-        EDD.Hash.Usuario usuarios[] = hash.getTabla();
-        for(int i = 0; i < usuarios.length; i++){
-            if(usuarios[i] != null){
-                cb0.addItem(usuarios[i].getCarnet());
-            }
+        EDD.Hash.Nodo tabla[] = hash.getTabla();
+        for(int i = 0; i < tabla.length; i++){
+            if(tabla[i] != null) cb0.addItem(tabla[i].getDatos()[0]);
         }
     }
     
+    //**************************************************************************
+    //**************************************************************************
+    //COMPONENTES
+    //EDITAR
     @Override
     protected void setBtn0(){
         lbl6.setForeground(Color.red);
+        lbl6.setText("");
         if(cb0.getSelectedItem() != null){
             int carnet = Integer.parseInt(cb0.getSelectedItem().toString());
-            int dispercion = hash.getDispercion(carnet);
-            EDD.Hash.Usuario usuario = hash.getUsuario(carnet, dispercion, 0);
-            txt0.setText(usuario.getNombre());
-            txt1.setText(usuario.getApellido());
-            txt2.setText(Integer.toString(carnet));
-            txt3.setText(usuario.getContraseña());
+            int disp = hash.getDisp(carnet);
+            EDD.Hash.Nodo usuario = hash.buscarUsuario(carnet, disp, 0);
+            txt0.setText(usuario.getDatos()[1]);
+            txt1.setText(usuario.getDatos()[2]);
+            txt2.setText(usuario.getDatos()[0]);
+            txt3.setText(usuario.getDatos()[3]);
         }else
             lbl6.setText("No existen usuarios a editar");
     }
+    //ACEPTAR
+    @Override
     protected void setBtn1(){
         lbl6.setForeground(Color.red);
         if(cb0.getSelectedItem() != null){            
@@ -51,12 +56,15 @@ public class Admin_Editar extends Frame.Frame{
             else{
                 try{
                     int carnet = Integer.parseInt(cb0.getSelectedItem().toString());
-                    int dispercion = hash.getDispercion(carnet);
+                    int disp = hash.getDisp(carnet);
                     if(carnet != Integer.parseInt(txt2.getText().trim())){
-                        if(hash.eliminarUsuario(carnet, dispercion, 0)){
+                        if(hash.eliminarUsuario(carnet, disp, 0)){
                             carnet = Integer.parseInt(txt2.getText().trim());
-                            dispercion = hash.getDispercion(carnet);
-                            hash.ingresarUsuario(txt0.getText(), txt1.getText(), txt3.getText(), carnet, dispercion, 0);
+                            disp = hash.getDisp(carnet);
+                            hash.buscarUsuario(carnet, disp, 0).getDatos()[0] = txt2.getText();
+                            hash.buscarUsuario(carnet, disp, 0).getDatos()[1] = txt0.getText();
+                            hash.buscarUsuario(carnet, disp, 0).getDatos()[2] = txt1.getText();
+                            hash.buscarUsuario(carnet, disp, 0).getDatos()[3] = txt3.getText();
                             cb0.removeAllItems();
                             cargarUsuarios();
                             txt0.setText("");
@@ -69,8 +77,9 @@ public class Admin_Editar extends Frame.Frame{
                             lbl6.setText("Error al editar de la tabla");
                         }
                     }else{
-                        EDD.Hash.Usuario usuario = hash.getUsuario(carnet, dispercion, 0);
-                        usuario.setUsuario(txt0.getText(), txt1.getText(), txt3.getText(), carnet);
+                        hash.buscarUsuario(carnet, disp, 0).getDatos()[1] = txt0.getText();
+                        hash.buscarUsuario(carnet, disp, 0).getDatos()[2] = txt1.getText();
+                        hash.buscarUsuario(carnet, disp, 0).getDatos()[3] = txt3.getText();
                         cb0.removeAllItems();
                         cargarUsuarios();
                         txt0.setText("");
@@ -87,9 +96,11 @@ public class Admin_Editar extends Frame.Frame{
         }else
             lbl6.setText("No existe usuario a modificar");
     }
+    //REGRESAR
+    @Override
     protected void setBtn2(){
-        clear();
-        aM = new Admin_Menu(hash);
+       adIn.setHash(hash);
+       adIn.setVisible();
+       frame.setVisible(false);
     }
-    
 }

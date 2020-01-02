@@ -2,172 +2,172 @@ package EDD;
 
 public class Hash {
     
-    public class Usuario{
-        private String nombre;
-        private String apellido;
-        private String contraseña;
-        private int carnet;
-
-        //**************************************************************************
-        //**************************************************************************
-        //SET DEL USUARIO
-        public void setUsuario(String nombre, String apellido, String contraseña, int carnet){
-            this.nombre = nombre;
-            this.apellido = apellido;
-            this.contraseña = contraseña;
-            this.carnet = carnet;
-        }
-
-        //**************************************************************************
-        //**************************************************************************
-        //GETS DEL USUARIO
-        public String getNombre(){ return nombre;}
-        public String getApellido() { return apellido;}
-        public String getContraseña() { return contraseña;}
-        public int getCarnet() { return carnet;}
+    //**************************************************************************
+    //**************************************************************************
+    //NODO DE LA TABLA HASH
+    public class Nodo{
+        private String [] datos; 
+        //  0.- Carnet
+        //  1.- Nombre
+        //  2.- Apellido
+        //  3.- Contraseña
+        
+        //**********************************************************************
+        //**********************************************************************
+        //SETS DEL NODO
+        public void setDatos(String[] datos) { this.datos = datos; }
+        
+        //**********************************************************************
+        //**********************************************************************
+        //GETS DEL NODO
+        public String[] getDatos() { return datos; }
     }
     
-    Usuario tablaHash[];
-    Usuario tablaAux[];
-    private int cantidad;
+    //**************************************************************************
+    //**************************************************************************
+    //ATRIBUTOS DE LA TABLA HASH
+    Nodo tabla[];
+    Nodo tablaAux[];
+    private int cant;
     private int size;
     String log;
     
+    //**************************************************************************
+    //**************************************************************************
+    //CONSTRUCTOR DE LA TABLA HASH
     public Hash(){
+        tabla = new Nodo[37];
+        log = "Errores al ingresar: ";
+        log += "**************************************************\n";
+        cant = 0;
         size = 37;
-        tablaHash = new Usuario[size];
-        log = "";
     }
     
-    
-    public int getSize() { return size;}
     //**************************************************************************
     //**************************************************************************
-    //SETEO DE LA FUNCION HASH Y LA MODIFICACION DEL SIZE A MAYOR PRIMO
-    public int getDispercion(int carnet){
-        if(getFactorCarga() > 55){
-            setNewSize();
-            re_Ingreso();
+    //GETS DE LA TABLA HASH
+    public int getCant() { return cant; }
+    public Nodo[] getTabla() { return tabla; }
+    public int getDisp(int carnet) { return carnet % size; }
+    public int getDisp(int carnet, int disp, int i){
+        if(tabla[disp] == null){
+            disp = getDispCol(carnet, disp, i);
+            return getDisp(carnet, disp, ++i);
         }
-        return carnet % size;
-    }
-    private int getFactorCarga(){
-        return 100*cantidad/size;
-    }
-    private void setNewSize(){
-        while(true){
-            if(esPrimo(++size)) break;
+        if(carnet == Integer.parseInt(tabla[disp].getDatos()[0])) return disp;
+        else{
+            disp = getDispCol(carnet, disp, i);
+            return getDisp(carnet, disp, ++i);
         }
     }
-    private boolean esPrimo(int numero){
-        int contador = 2;
-        while(contador < numero){
-            if(numero % contador == 0) return false;
-            contador++;
+    private int getDispCol(int carnet, int disp, int i){
+        disp = (carnet % size + 1) * i;
+        while(disp >= size) { disp -= size; }
+        return disp;
+    }
+    private int getFactCarg() { return (100 * cant) / size; }
+    
+    //**************************************************************************
+    //**************************************************************************
+    //INSERTAR NUEVO USUARIO
+    public void insertarUsuario(String[] datos, int disp, int i){
+        if(tabla[disp] == null){
+            if(caracteres8(datos[3])){
+                cant++;
+                tabla[disp] = new Nodo();
+                tabla[disp].setDatos(datos);
+                if(getFactCarg() >= 55) ordenarNuevaTabla();
+            }
+            else{
+                log += "->Usuario: " + datos[1] + "\n";
+                log += "  Carnet:  " + datos[0] + "\n";
+                log += "  Problema: Contraseña posee menos de 8 caracteres\n";
+                log += "            " + datos[3] + "\n";
+                log += "**************************************************\n";
+            }
         }
-        return true;
+        else if(tabla[disp].getDatos()[0] == datos[0]){
+            log += "->Usuario: " + datos[1] + "\n";
+            log += "  Carnet:  " + datos[0] + "\n";
+            log += "  Problema: Carnet repetido\n";
+            log += "            " + datos[0] + " = " + datos[0] + "\n";
+            log += "**************************************************\n";
+        }
+        else{
+            disp = getDispCol(Integer.parseInt(datos[0]), disp, i);
+            insertarUsuario(datos, disp, ++i);
+        }
     }
     
+    //**************************************************************************
+    //**************************************************************************
+    //BUSQUEDA DE USUARIO
+    public Nodo buscarUsuario(int carnet, int disp, int i){
+        if(tabla[disp] == null){
+            if(i >= size - 1) return null;
+            disp = getDispCol(carnet, disp, i);
+            return buscarUsuario(carnet, disp, ++i);
+        }
+        else if(Integer.parseInt(tabla[disp].getDatos()[0]) == carnet) return tabla[disp];        
+        else{
+            disp = getDispCol(carnet, disp, i);
+            return buscarUsuario(carnet, disp, ++i);
+        }
+    }
     
     //**************************************************************************
     //**************************************************************************
-    //REINGRESO DE LA TABLA HASH POR EL CAMBIO DEL SIZE
-    private void re_Ingreso(){
-        tablaAux = tablaHash;
-        tablaHash = null;
-        int dispercion;
-        tablaHash = new Usuario[size];
+    //ELIMINACION DE USUARIO
+    public boolean eliminarUsuario(int carnet, int disp, int i){
+        if(tabla[disp] == null){
+            if(i >= size - 1) return false;
+            disp = getDispCol(carnet, disp, i);
+            return eliminarUsuario(carnet, disp, ++i);
+        }
+        else if(Integer.parseInt(tabla[disp].getDatos()[0]) == carnet){
+            tabla[disp] = null;
+            cant--;
+            return true;
+        }
+        else{
+            disp = getDispCol(carnet, disp, i);
+            return eliminarUsuario(carnet, disp, ++i);
+        }
+    }
+    
+    //**************************************************************************
+    //**************************************************************************
+    //EXTRAS
+    private void ordenarNuevaTabla(){
+        tablaAux = tabla;
+        setNuevoPrimo();
+        tabla = new Nodo[size];
         for(int i = 0; i < tablaAux.length; i++){
             if(tablaAux[i] != null){
-                dispercion = getDispercion(tablaAux[i].getCarnet());
-                ingresarUsuario(tablaAux[i].getNombre(), tablaAux[i].getApellido(),
-                            tablaAux[i].getContraseña(), tablaAux[i].getCarnet(),
-                            dispercion, 0);
+                int disp = Integer.parseInt(tablaAux[i].getDatos()[0]);
+                insertarUsuario(tablaAux[i].getDatos(), disp, 0);
             }
         }
-        tablaAux = null;
     }
-    
-    
-    //**************************************************************************
-    //**************************************************************************
-    //INGRESO DE LA TABLA HASH
-    public void ingresarUsuario(String nombre, String apellido, String contraseña, int carnet, int dispercion, int i){
-        if(tablaHash[dispercion] == null){
-            tablaHash[dispercion] = new Usuario();
-            tablaHash[dispercion].setUsuario(nombre, apellido, contraseña, carnet);
-            cantidad++;
-        }
-        else if(tablaHash[dispercion].getCarnet() == carnet)
-            log += "-->Usuario no ingresado:\n"
-                    + "\t-->" + carnet + " -- " + nombre + " " + apellido + "\n"
-                    + "\t-->Contraseña: " + contraseña + "\n"
-                    + "\t\t-->Razon: Carnet repetido...";
-        else if(!ochoCaracteres(contraseña))
-            log += "-->Usuario no ingresado:\n"
-                    + "\t-->" + carnet + " -- " + nombre + " " + apellido + "\n"
-                    + "\t-->Contraseña: " + contraseña + "\n"
-                    + "\t\t-->Razon: Contraseña contiene menos de 8 caracteres...";
-        else{
-            dispercion = (carnet % 7 + 1) * i;
-            while(dispercion >= tablaHash.length){
-                dispercion -= tablaHash.length;
-            }
-            ingresarUsuario(nombre, apellido, contraseña, carnet, dispercion, ++i);
-        }
-            
-    }
-    private boolean ochoCaracteres(String contraseña){
+    private boolean caracteres8(String contraseña){
         char cadena[] = contraseña.toCharArray();
         if(cadena.length >= 8) return true;
         return false;
     }
-    
-    
-    //**************************************************************************
-    //**************************************************************************
-    //BUSQUEDA DE LA TABLA HASH
-    public int getDispExacta(int carnet, int dispercion, int i){
-        if(tablaHash[dispercion].getCarnet() == carnet) return dispercion;
-        else{
-            dispercion = (carnet % 7 + 1) * i;    
-            while(dispercion >= tablaHash.length){
-                dispercion -= tablaHash.length;
+    private void setNuevoPrimo(){
+        int c;
+        boolean primo = false;
+        while(!primo){
+            c = 2;
+            ++size;
+            while(c < size){
+                primo = true;
+                if(c % size == 0){
+                    primo = false;
+                    break;
+                }
+                else c++;
             }
-            return getDispExacta(carnet, dispercion, ++i);
-        }
-    }
-    public Usuario getUsuario(int carnet, int dispercion, int i){
-        if(tablaHash[dispercion] == null) return null;
-        else if(tablaHash[dispercion].getCarnet() == carnet) return tablaHash[dispercion];
-        else{
-            dispercion = (carnet % 7 + 1) * i;    
-            while(dispercion >= tablaHash.length){
-                dispercion -= tablaHash.length;
-            }
-            return getUsuario(carnet, dispercion, ++i);
-        }
-    }
-    public Usuario[] getTabla() { return tablaHash; }
-    
-    
-    //**************************************************************************
-    //**************************************************************************
-    //ELIMINAR DE LA TABLA HASH
-    public boolean eliminarUsuario(int carnet, int dispercion, int i){
-        if(tablaHash[dispercion] == null) return false;
-        else if(tablaHash[dispercion].getCarnet() == carnet){
-            tablaHash[dispercion] = null;
-            cantidad--;
-            re_Ingreso();
-            return true;
-        }
-        else{
-            dispercion = (carnet % 7 + 1) * i;    
-            while(dispercion >= tablaHash.length){
-                dispercion -= tablaHash.length;
-            }
-            return eliminarUsuario(carnet, dispercion, ++i);
         }
     }
 }
