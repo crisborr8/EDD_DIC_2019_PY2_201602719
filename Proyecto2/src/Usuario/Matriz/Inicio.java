@@ -1,48 +1,45 @@
-package Usuario;
+package Usuario.Matriz;
 
 import Frame.Frame;
 
-public class Usuario_Inicio extends Frame{
+public class Inicio extends Frame{
     
-    Usuario.Ordenamiento.Inicio iniOrd;
-    Usuario_Arbol usAr;
-    Login.Login lg;
-    EDD.Hash hash;
+    Usuario.Usuario_Inicio ini;
     
-    public Usuario_Inicio(Login.Login lg){
-        this.lg = lg;
+    public Inicio(Usuario.Usuario_Inicio ini){
+        this.ini = ini;
         frame.setVisible(false);
-        usAr = new Usuario_Arbol(this);
-        iniOrd = new Usuario.Ordenamiento.Inicio(this);
-        setUserInicio();
+        setUserMatriz();
     }
     
     //**************************************************************************
     //**************************************************************************
     //BOTONES
-    //ARBOLES
+    //ADYACENCIA
     @Override
     protected void setBtn0(){
-        usAr.setDatos(datos);
+        Adyacencia ady = new Adyacencia(this);
+        ady.setDatos(datos);
         frame.setVisible(false);
-        usAr.setVisible();
     }
-    //MATRIZ
+    //REC POR ANCHURA
     @Override
     protected void setBtn1(){
-        
+        Anchura anch = new Anchura(this);
+        anch.setDatos(datos);
+        frame.setVisible(false);
     }
-    //ORDENAMIENTOS
+    //REC POR PROFUNDIDAD
     @Override
     protected void setBtn2(){
-        iniOrd.setDatos(datos);
+        Profundidad prof = new Profundidad(this);
+        prof.setDatos(datos);
         frame.setVisible(false);
-        iniOrd.setVisible();
     }
     //REGRESAR
     @Override
     protected void setBtn3(){
-        lg.setVisible();
+        ini.setVisible();
         frame.setVisible(false);
     }
 }

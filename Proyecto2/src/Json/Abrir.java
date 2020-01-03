@@ -128,4 +128,136 @@ public class Abrir {
         }
         return valor;
     }
+    
+    //**************************************************************************
+    //**************************************************************************
+    //ABRIR ARRAY
+    public int[] abrirArray(){
+        int valor[] = new int[0];
+        try{
+            JsonFactory jsonFactory = new JsonFactory();
+            JsonParser jsonParser = jsonFactory.createParser(new File(getPath()));
+            int aux[], i, cont, contAux, num;
+            String campo;
+            while(jsonParser.nextToken() != JsonToken.END_OBJECT){
+                campo = jsonParser.getCurrentName();
+                if("Array".equals(campo)){
+                    jsonParser.nextToken();
+                    while(jsonParser.nextToken() != JsonToken.END_ARRAY){
+                        cont = contAux = num = 0;
+                        while(jsonParser.nextToken() != JsonToken.END_OBJECT){
+                            campo = jsonParser.getCurrentName();
+                            if("num".equals(campo)){
+                                jsonParser.nextToken();
+                                num = jsonParser.getIntValue();
+                                cont++;
+                            }
+                            if(cont == 1){
+                                aux = new int[valor.length + 1];
+                                for(i = 0; i < valor.length; i++){
+                                    aux[i] = valor[i];
+                                }
+                                aux[i] = num;
+                                valor = new int[aux.length];
+                                valor = aux;
+                                cont = 0;
+                            }
+                            if(contAux > 2){
+                                jsonParser.nextToken();
+                            }
+                            else contAux++;
+                        }
+                    }
+                }
+            }
+        }catch(Exception ex){
+            System.out.println("Error en:\n-->" + ex);
+        }
+        return valor;
+    }
+    
+    //**************************************************************************
+    //**************************************************************************
+    //ABRIR MATRIZ
+    public String[][] abrirMatriz(){
+        String[][] matriz = new String[0][0];
+        String[][] matrizAux;
+        try{
+            String[] adyacencia = new String[0];
+            String[] adyacenciaAux;
+            String campo;
+            int cont, contAux, i;
+            int ccont, ccontAux;
+            JsonFactory jsonFactory = new JsonFactory();
+            JsonParser jsonParser = jsonFactory.createParser(new File(getPath()));
+            while(jsonParser.nextToken() != JsonToken.END_OBJECT){
+                campo = jsonParser.getCurrentName();
+                if("Graph".equals(campo)){
+                    jsonParser.nextToken();
+                    while(jsonParser.nextToken() != JsonToken.END_ARRAY){
+                        cont = contAux = 0;
+                        adyacencia = new String[1];
+                        while(jsonParser.nextToken() != JsonToken.END_OBJECT){
+                            campo = jsonParser.getCurrentName();
+                            if("Node".equals(campo)){
+                                jsonParser.nextToken();
+                                adyacencia[0] = jsonParser.getValueAsString();
+                                cont++;
+                            }
+                            if("Adjacency".equals(campo)){
+                                jsonParser.nextToken();
+                                while(jsonParser.nextToken() != JsonToken.END_ARRAY){
+                                    ccont = ccontAux = 0;
+                                    while(jsonParser.nextToken() != JsonToken.END_OBJECT){
+                                        campo = jsonParser.getCurrentName();
+                                        if("Node".equals(campo)){
+                                            jsonParser.nextToken();
+                                            adyacenciaAux = null;
+                                            adyacenciaAux = adyacencia;
+                                            adyacencia = new String[adyacencia.length + 1];
+                                            for(i = 0; i < adyacenciaAux.length; i++){
+                                                adyacencia[i] = adyacenciaAux[i];
+                                            }
+                                            adyacencia[i] = jsonParser.getValueAsString();
+                                            ccont++;
+                                        }
+                                        ccontAux++;
+                                        if(ccontAux != ccont){
+                                            ccontAux = ccont = 0;
+                                            jsonParser.nextToken();
+                                        }
+                                    }
+                                }
+                                cont++;
+                            }
+                            if(cont == 2){
+                                matrizAux = null;
+                                matrizAux = matriz;
+                                int tamañoM = 0;
+                                for(int j = 0; j < matrizAux.length; j++){
+                                    if(tamañoM < matrizAux[j].length) tamañoM = matrizAux[j].length;
+                                }
+                                if(tamañoM > adyacencia.length)
+                                    matriz = new String[matriz.length + 1][tamañoM];
+                                else
+                                    matriz = new String[matriz.length + 1][adyacencia.length];
+                                for(i = 0; i < matrizAux.length; i++){
+                                    matriz[i] = matrizAux[i];
+                                }
+                                matriz[i] = adyacencia;
+                                cont = contAux = 0;
+                            }
+                            if(contAux > 3){
+                                jsonParser.nextToken();
+                            }
+                            else contAux++;
+                        }
+                    }
+                }
+            }
+        }catch(Exception ex){
+            System.out.println("Error en:\n-->" + ex);
+        }
+        return matriz;
+    }
 }

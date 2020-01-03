@@ -32,7 +32,9 @@ public class Graficar {
     //GRAFICAR USUARIOS
     public void graficar_Hash(Hash hash){
         Hash.Nodo tabla[] = hash.getTabla();
-        String codigo = "rankdir = LR;\n";
+        String codigo = "labelloc = \"t\";\n";
+        codigo += "label = \"TABLA HASH\";\n";
+        codigo += "rankdir = LR;\n";
         codigo += "node [shape=box];\n";
         String label = "";
         int disp, carnet;
@@ -58,7 +60,9 @@ public class Graficar {
     //**************************************************************************
     //GRAFICAR AVL
     public void graficarAVL(String extra, AVL.Nodo raiz){
-        String codigo = "node [shape=record, style=filled];\n";
+        String codigo = "labelloc = \"t\";\n";
+        codigo += "label=\"ARBOL AVL\";\n";
+        codigo += "node [shape=record, style=filled];\n";
         if(!extra.equals("")) codigo += "extra [label=\"" + extra + "\", shape=plaintext];\n";
         if(raiz != null) codigo += getCodigoAVL(raiz);
         Mostrar(codigo);
@@ -80,7 +84,9 @@ public class Graficar {
     //**************************************************************************
     //GRAFICAR B
     public void graficarB(String extra, B.Nodo raiz){
-        String codigo = "node [shape=plaintext, style=filled];\n";
+        String codigo = "labelloc = \"t\";\n";
+        codigo += "label=\"ARBOL B\";\n";
+        codigo += "node [shape=plaintext, style=filled];\n";
         if(!extra.equals("")) codigo += "extra [label=\"" + extra + "\", shape=plaintext];\n";
         if(raiz != null) codigo += getCodigoB(raiz);
         Mostrar(codigo);
@@ -116,5 +122,56 @@ public class Graficar {
             else break;
         }
         return codigo;
+    }
+    
+    //**************************************************************************
+    //**************************************************************************
+    //ORDENAMIENTO
+    public void graficarOrd(String titulo, String extra, int[] valores, String[] colores){
+        String label = "label=<<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\">\n";
+        label += "<TR>\n";
+        for(int i = 0; i < valores.length; i++){
+            label += "<TD BGCOLOR=\"" + colores[i] + "\">" + valores[i] + "</TD>\n";
+        }
+        label += "</TR></TABLE>>";
+        String codigo = "labelloc = \"t\";\n";
+        codigo += "label=\"" + titulo + "\";\n";
+        codigo += "node [shape=plaintext, style=filled];\n";
+        if(!extra.equals("")) codigo += "extra [label=\"" + extra + "\", shape=plaintext];\n";
+        codigo += "array [" + label + "];\n";
+        Mostrar(codigo);
+    }
+    
+    //**************************************************************************
+    //**************************************************************************
+    //MATRIZ
+    public void graficarAdy(String titulo, String ingresar, String[][] color, String[][] matriz){
+        String nodos = "";
+        String relaciones = "";
+        String mat_ady = "_matriz [shape=plaintext,\n";
+        mat_ady += "label=< <TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\">\n";
+        for(int i = 0; i < matriz.length; i++){
+            mat_ady += "<TR>\n";
+            for(int j = 0; j < matriz[i].length; j++){
+                mat_ady += "<TD BGCOLOR=\"" + color[i][j] + "\">" + matriz[i][j] + "</TD>\n";
+                if(i > 0 && j > 0 && j >= i){
+                    nodos += "_" + matriz[0][j] + " [fillcolor=" + color[0][j] + ", "
+                               +  "label=\"" + matriz[0][j] + "\"];\n";
+                    for(int k = 0; k < Integer.parseInt(matriz[i][j]); k++)
+                            relaciones += "_" + matriz[0][j] + "->_" + matriz[i][0] + ";\n";
+                }
+            }
+            mat_ady += "</TR>\n";
+        }
+        mat_ady += "</TABLE>>];\n";
+        
+        String codigo = "labelloc = \"t\";\n";
+        codigo += "label=\"" + titulo + "\";\n";
+        //codigo += "ordering = out;\n";
+        codigo += "node [style=filled];\n";
+        codigo += "_agregar [shape=plaintext, label=\"" + ingresar + "\"];\n";
+        codigo += "edge [arrowhead=none];\n";
+        codigo += nodos + relaciones + mat_ady;
+        Mostrar(codigo);
     }
 }

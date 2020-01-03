@@ -72,8 +72,8 @@ public class AVL extends Thread{
                             graficar("");
                         }
                         bucle = true;
+                        System.out.println("Insercion Finalizada");
                     }
-                    System.out.println("Insercion Finalizada");
                     esperar(50);
                 }
             break;

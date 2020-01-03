@@ -267,6 +267,66 @@ public class Frame {
         
         setPosicion(500, 200);
     }
+    protected void setUserOrdenamiento(){
+        lbl0.setText("Nombre:   ");
+        lbl1.setText("Apellido: ");
+        lbl2.setText("Usuario");
+        lbl3.setText("Ordenamiento");
+        btn0.setText("Burbuja");
+        btn1.setText("Inserción");
+        btn2.setText("Quicksort");
+        btn3.setText("Salir");
+        
+        lbl0.setBounds(0, 10, 200, 20);
+        lbl1.setBounds(0, 40, 200, 20);
+        lbl2.setBounds(200, 70, 100, 20);
+        lbl3.setBounds(175, 100, 150, 20);
+        btn0.setBounds(50, 150, 175, 20);
+        btn1.setBounds(275, 150, 175, 20);
+        btn2.setBounds(150, 200, 200, 20);
+        btn3.setBounds(200, 250, 100, 20);
+        
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
+        frame.add(btn3);
+        
+        setPosicion(500,300);
+    }
+    protected void setUserMatriz(){
+        lbl0.setText("Nombre:   ");
+        lbl1.setText("Apellido: ");
+        lbl2.setText("Usuario");
+        lbl3.setText("Matriz");
+        btn0.setText("Adyacencia");
+        btn1.setText("Rec. por Anchura");
+        btn2.setText("Rec. por Profundidad");
+        btn3.setText("Salir");
+        
+        lbl0.setBounds(0, 10, 200, 20);
+        lbl1.setBounds(0, 40, 200, 20);
+        lbl2.setBounds(200, 70, 100, 20);
+        lbl3.setBounds(175, 100, 150, 20);
+        btn0.setBounds(50, 150, 175, 20);
+        btn1.setBounds(275, 150, 175, 20);
+        btn2.setBounds(150, 200, 200, 20);
+        btn3.setBounds(200, 250, 100, 20);
+        
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
+        frame.add(btn3);
+        
+        setPosicion(500,300);
+    }
     
     //**************************************************************************
     //**************************************************************************
@@ -553,6 +613,259 @@ public class Frame {
         setPosicion(500, 280);
     }
     
+    //**************************************************************************
+    //**************************************************************************
+    //ORDENAMIENTO
+    protected void setOrd_Burbuja(){
+        lbl0.setText("Nombre:   ");
+        lbl1.setText("Apellido: ");
+        lbl2.setText("Usuario");
+        lbl3.setText("Ordenamiento - Burbuja");
+        lbl4.setText("Insertar");
+        lbl5.setText("Automatico");
+        lbl6.setText("No existe arreglo");
+        btn0.setText("Abrir .json");
+        btn1.setText("Siguiente paso");
+        btn2.setText("Iniciar arreglo");
+        btn3.setText("Regresar");
+        
+        lbl0.setBounds(0, 10, 200, 20);
+        lbl1.setBounds(0, 40, 200, 20);
+        lbl2.setBounds(200, 70, 100, 20);
+        lbl3.setBounds(175, 100, 150, 20);
+        lbl4.setBounds(175, 130, 150, 20);
+        lbl5.setBounds(50, 160, 100, 20);
+        lbl6.setBounds(350, 160, 100, 20);
+        chb0.setBounds(90, 180, 20, 20);
+        btn0.setBounds(325, 190, 150, 20);
+        btn1.setBounds(25, 220, 150, 20);
+        btn2.setBounds(325, 220, 150, 20);
+        btn3.setBounds(175, 250, 150, 20);
+        
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(lbl4);
+        frame.add(lbl5);
+        frame.add(lbl6);
+        frame.add(chb0);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
+        frame.add(btn3);
+        
+        setPosicion(500, 280);
+    }
+    protected void setOrd_Insercion(){
+        lbl0.setText("Nombre:   ");
+        lbl1.setText("Apellido: ");
+        lbl2.setText("Usuario");
+        lbl3.setText("Ordenamiento - Insercion");
+        lbl4.setText("Insertar");
+        lbl5.setText("Automatico");
+        lbl6.setText("No existe arreglo");
+        btn0.setText("Abrir .json");
+        btn1.setText("Siguiente paso");
+        btn2.setText("Iniciar arreglo");
+        btn3.setText("Regresar");
+        
+        lbl0.setBounds(0, 10, 200, 20);
+        lbl1.setBounds(0, 40, 200, 20);
+        lbl2.setBounds(200, 70, 100, 20);
+        lbl3.setBounds(175, 100, 150, 20);
+        lbl4.setBounds(175, 130, 150, 20);
+        lbl5.setBounds(50, 160, 100, 20);
+        lbl6.setBounds(350, 160, 100, 20);
+        chb0.setBounds(90, 180, 20, 20);
+        btn0.setBounds(325, 190, 150, 20);
+        btn1.setBounds(25, 220, 150, 20);
+        btn2.setBounds(325, 220, 150, 20);
+        btn3.setBounds(175, 250, 150, 20);
+        
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(lbl4);
+        frame.add(lbl5);
+        frame.add(lbl6);
+        frame.add(chb0);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
+        frame.add(btn3);
+        
+        setPosicion(500, 280);
+    }
+    protected void setOrd_Quicksort(){
+        lbl0.setText("Nombre:   ");
+        lbl1.setText("Apellido: ");
+        lbl2.setText("Usuario");
+        lbl3.setText("Ordenamiento - Quicksort");
+        lbl4.setText("Insertar");
+        lbl5.setText("Automatico");
+        lbl6.setText("No existe arreglo");
+        btn0.setText("Abrir .json");
+        btn1.setText("Siguiente paso");
+        btn2.setText("Iniciar arreglo");
+        btn3.setText("Regresar");
+        
+        lbl0.setBounds(0, 10, 200, 20);
+        lbl1.setBounds(0, 40, 200, 20);
+        lbl2.setBounds(200, 70, 100, 20);
+        lbl3.setBounds(175, 100, 150, 20);
+        lbl4.setBounds(175, 130, 150, 20);
+        lbl5.setBounds(50, 160, 100, 20);
+        lbl6.setBounds(350, 160, 100, 20);
+        chb0.setBounds(90, 180, 20, 20);
+        btn0.setBounds(325, 190, 150, 20);
+        btn1.setBounds(25, 220, 150, 20);
+        btn2.setBounds(325, 220, 150, 20);
+        btn3.setBounds(175, 250, 150, 20);
+        
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(lbl4);
+        frame.add(lbl5);
+        frame.add(lbl6);
+        frame.add(chb0);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
+        frame.add(btn3);
+        
+        setPosicion(500, 280);
+    }
+    
+    //**************************************************************************
+    //**************************************************************************
+    //MATRIZ
+    protected void setMat_Adyacencia(){
+        lbl0.setText("Nombre:   ");
+        lbl1.setText("Apellido: ");
+        lbl2.setText("Usuario");
+        lbl3.setText("Matriz - Adyacencia");
+        lbl4.setText("Insertar");
+        lbl5.setText("Automatico");
+        lbl6.setText("No existe matriz");
+        btn0.setText("Abrir .json");
+        btn1.setText("Siguiente paso");
+        btn2.setText("Iniciar matriz");
+        btn3.setText("Regresar");
+        
+        lbl0.setBounds(0, 10, 200, 20);
+        lbl1.setBounds(0, 40, 200, 20);
+        lbl2.setBounds(200, 70, 100, 20);
+        lbl3.setBounds(175, 100, 150, 20);
+        lbl4.setBounds(175, 130, 150, 20);
+        lbl5.setBounds(50, 160, 100, 20);
+        lbl6.setBounds(350, 160, 100, 20);
+        chb0.setBounds(90, 180, 20, 20);
+        btn0.setBounds(325, 190, 150, 20);
+        btn1.setBounds(25, 220, 150, 20);
+        btn2.setBounds(325, 220, 150, 20);
+        btn3.setBounds(175, 250, 150, 20);
+        
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(lbl4);
+        frame.add(lbl5);
+        frame.add(lbl6);
+        frame.add(chb0);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
+        frame.add(btn3);
+        
+        setPosicion(500, 280);
+    }
+    protected void setMat_Profundidad(){
+        lbl0.setText("Nombre:   ");
+        lbl1.setText("Apellido: ");
+        lbl2.setText("Usuario");
+        lbl3.setText("Matriz - Profundidad");
+        lbl4.setText("Insertar");
+        lbl5.setText("Automatico");
+        lbl6.setText("No existe matriz");
+        btn0.setText("Abrir .json");
+        btn1.setText("Siguiente paso");
+        btn2.setText("Iniciar recorrido");
+        btn3.setText("Regresar");
+        
+        lbl0.setBounds(0, 10, 200, 20);
+        lbl1.setBounds(0, 40, 200, 20);
+        lbl2.setBounds(200, 70, 100, 20);
+        lbl3.setBounds(175, 100, 150, 20);
+        lbl4.setBounds(175, 130, 150, 20);
+        lbl5.setBounds(50, 160, 100, 20);
+        lbl6.setBounds(350, 160, 100, 20);
+        chb0.setBounds(90, 180, 20, 20);
+        btn0.setBounds(325, 190, 150, 20);
+        btn1.setBounds(25, 220, 150, 20);
+        btn2.setBounds(325, 220, 150, 20);
+        btn3.setBounds(175, 250, 150, 20);
+        
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(lbl4);
+        frame.add(lbl5);
+        frame.add(lbl6);
+        frame.add(chb0);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
+        frame.add(btn3);
+        
+        setPosicion(500, 280);
+    }
+    protected void setMat_Anchura(){
+        lbl0.setText("Nombre:   ");
+        lbl1.setText("Apellido: ");
+        lbl2.setText("Usuario");
+        lbl3.setText("Matriz - Anchura");
+        lbl4.setText("Insertar");
+        lbl5.setText("Automatico");
+        lbl6.setText("No existe matriz");
+        btn0.setText("Abrir .json");
+        btn1.setText("Siguiente paso");
+        btn2.setText("Iniciar recorrido");
+        btn3.setText("Regresar");
+        
+        lbl0.setBounds(0, 10, 200, 20);
+        lbl1.setBounds(0, 40, 200, 20);
+        lbl2.setBounds(200, 70, 100, 20);
+        lbl3.setBounds(175, 100, 150, 20);
+        lbl4.setBounds(175, 130, 150, 20);
+        lbl5.setBounds(50, 160, 100, 20);
+        lbl6.setBounds(350, 160, 100, 20);
+        chb0.setBounds(90, 180, 20, 20);
+        btn0.setBounds(325, 190, 150, 20);
+        btn1.setBounds(25, 220, 150, 20);
+        btn2.setBounds(325, 220, 150, 20);
+        btn3.setBounds(175, 250, 150, 20);
+        
+        frame.add(lbl0);
+        frame.add(lbl1);
+        frame.add(lbl2);
+        frame.add(lbl3);
+        frame.add(lbl4);
+        frame.add(lbl5);
+        frame.add(lbl6);
+        frame.add(chb0);
+        frame.add(btn0);
+        frame.add(btn1);
+        frame.add(btn2);
+        frame.add(btn3);
+        
+        setPosicion(500, 280);
+    }
     
     //**************************************************************************
     //**************************************************************************
