@@ -174,4 +174,49 @@ public class Graficar {
         codigo += nodos + relaciones + mat_ady;
         Mostrar(codigo);
     }
+    public void graficarRec(String titulo, String nodoColor, String[][] matriz, String[][] reProf){        
+        String nodosMat = "";
+        String relacMat = "";
+        for(int i = 0; i < matriz.length; i++){
+            for(int j = 0; j < matriz[i].length; j++){
+                if(matriz[i][j] != null){
+                    nodosMat += "_" + matriz[i][j] + " [label=\"" + matriz[i][j] + "\"];\n"; 
+                    if(j > 0) relacMat += "_" + matriz[i][0] + "->_" + matriz[i][j] + ";\n";
+                }
+            }
+        }
+        
+        String codigo = "labelloc = \"t\";\n";
+        codigo += "label=\"" + titulo + "\";\n";
+        codigo += "node [style=filled];\n";
+        codigo += "edge [arrowhead=none];\n";
+        codigo += nodosMat + relacMat;
+        if(reProf[0][0] != null) codigo += getCodigoRec(0, reProf);
+        if(!nodoColor.equals("")){
+            codigo += nodoColor + " [fillcolor=green];\n";
+            codigo += "_" + nodoColor + " [fillcolor=green];\n";
+        }
+        Mostrar(codigo);
+    }
+    private String getCodigoRec(int i, String[][] matriz){
+        System.out.println("-->" + matriz[i][0]);
+        if(matriz[i].length == 1) return matriz[i][0];
+        String codigo = "";
+        for(int j = 1; j < matriz[i].length; j++){
+            if(matriz[i][j] != null){
+                System.out.println("--->" + matriz[i][0] + " con " + matriz[i][j]);
+                codigo += matriz[i][0] + "->" + matriz[i][j] + ";\n";
+                int ni = getI(matriz, matriz[i][j]);
+                if(ni != -1) codigo += getCodigoRec(ni, matriz);
+            }
+        }
+        return codigo;
+    }
+    private int getI(String[][]matriz, String dato){
+        for(int i = 0; i < matriz.length; i++){
+            if(matriz[i][0] != null)
+                if(matriz[i][0].equals(dato)) return i;
+        }
+        return -1;
+    }
 }

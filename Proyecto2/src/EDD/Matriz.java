@@ -8,6 +8,7 @@ public class Matriz extends Thread{
     private int tipo;
     private boolean auto;
     private boolean bucle;
+    private String[] visitado;
     private String[][] matriz;
     private Graficar.Graficar graficar;
     
@@ -39,8 +40,28 @@ public class Matriz extends Thread{
                 }
             break;
             case 1:
+                boolean anchura = true;
+                while(anchura){
+                    if(!bucle){
+                        System.out.println("Iniciando rec por anchura");
+                        recAnch();
+                        System.out.println("Rec. por ancura finalizada");
+                        bucle = true;
+                    }
+                    esperar(50);
+                }
             break;
             case 2:
+                boolean profundidad = true;
+                while(profundidad){
+                    if(!bucle){
+                        System.out.println("Iniciando rec por profundidad");
+                        recProf();
+                        System.out.println("Rec. por profundidad finalizada");
+                        bucle = true;
+                    }
+                    esperar(50);
+                }
             break;
         }
     }
@@ -121,6 +142,121 @@ public class Matriz extends Thread{
     
     //**************************************************************************
     //**************************************************************************
+    //REC. POR PROFUNDIAD
+    private void recProf(){
+        ordenarMatriz();
+        String[][] matAdy = new String[matriz.length][matriz.length];
+        graficarRec("", matAdy);
+        visitado = new String[matriz.length];
+        visitado[0] = matriz[0][0];
+        matAdy = setMatProf(0, 0, matAdy);
+    }
+    private String[][] setMatProf(int iMat, int iAdy, String[][] matAdy){
+        matAdy[iAdy][0] = matriz[iMat][0];
+        int jAdy = 1;
+        if(matriz[iMat].length == 1) graficarRec(matriz[iMat][0], matAdy);
+        for(int j = 1; j < matriz[iMat].length; j++){
+            if(!estaVisitado(matriz[iMat][j])){
+                for(int i = 0; i < visitado.length; i++){
+                    if(visitado[i] == null){
+                        visitado[i] = matriz[iMat][j];
+                        break;
+                    }
+                }
+                matAdy[iAdy][jAdy] = matriz[iMat][j];
+                jAdy++;
+                graficarRec(matriz[iMat][j], matAdy);
+                matAdy = setMatProf(getI(matriz[iMat][j]), iAdy + 1, matAdy);
+                //graficarRec(matriz[iMat][j], matAdy);
+            }
+        }
+        return matAdy;
+    }
+    
+    //**************************************************************************
+    //**************************************************************************
+    //REC. POR ANCHURA
+    private void recAnch(){
+        ordenarMatriz();
+        String[][] matAdy = new String[matriz.length][matriz.length];
+        graficarRec("", matAdy);
+        visitado = new String[matriz.length];
+        visitado[0] = matriz[0][0];
+        matAdy = setMatAnch(0, 0, matAdy);
+    }
+    private String[][] setMatAnch(int iMat, int iAdy, String[][] matAdy){
+        matAdy[iAdy][0] = matriz[iMat][0];
+        int jAdy = 1;
+        if(matriz[iMat].length == 1) graficarRec(matriz[iMat][0], matAdy);
+        for(int j = 1; j < matriz[iMat].length; j++){
+            if(!estaVisitado(matriz[iMat][j])){
+                for(int i = 0; i < visitado.length; i++){
+                    if(visitado[i] == null){
+                        visitado[i] = matriz[iMat][j];
+                        break;
+                    }
+                }
+                matAdy[iAdy][jAdy] = matriz[iMat][j];
+                jAdy++;
+                graficarRec(matriz[iMat][j], matAdy);
+            }
+        }
+        for(int j = 1; j < matAdy[iAdy].length; j++){
+            if(matAdy[iAdy][j] != null){
+                matAdy = setMatAnch(getI(matAdy[iAdy][j]), iAdy + 1, matAdy);
+                //graficarRec(matAdy[iAdy][j], matAdy);
+            }
+        }
+        return matAdy;
+    }
+    
+    //**************************************************************************
+    //**************************************************************************
+    //EXTRAS
+    private int getI(String dato){
+        for(int i = 0; i < matriz.length; i++){
+            if(matriz[i][0] != null)
+                if(matriz[i][0].equals(dato)) return i;
+        }
+        return -1;
+    }
+    private boolean estaVisitado(String dato){
+        for(int i = 0; i < visitado.length; i++){
+            if(visitado[i] == null) return false;
+            else if(visitado[i].equals(dato)) return true;
+        }
+        return false;
+    }
+    private void ordenarMatriz(){
+        String aux;
+        String[] auxV;
+        for(int i = 0; i < matriz.length - 1; i++){
+            if(matriz[i][0] != null){
+                for(int j = 1; j < matriz[i].length - 1; j++){
+                    if(matriz[i][j + 1] != null){
+                        if(matriz[i][j].compareTo(matriz[i][j + 1]) > 0){
+                            aux = matriz[i][j];
+                            matriz[i][j] = matriz[i][j + 1];
+                            matriz[i][j + 1] = aux;
+                            if(j > 1) j -= 2;
+                        }
+                    }
+                }
+                if(matriz[i + 1][0] != null){
+                    if(matriz[i][0].compareTo(matriz[i + 1][0]) > 0){
+                        auxV = matriz[i];
+                        matriz[i] = matriz[i + 1];
+                        matriz[i + 1] = auxV;
+                        if(i > 0) i -= 2;
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    //**************************************************************************
+    //**************************************************************************
     //GRAFICAR
     private void graficar(String ingresar, String[][] color, String[][] matAdy){
         String titulo = "Matriz "; 
@@ -128,12 +264,16 @@ public class Matriz extends Thread{
             titulo += "de Adyacencia";
             graficar.graficarAdy(titulo, ingresar, color, matAdy);
         }
-        else if(tipo == 1){
-            titulo = "Rec. por Anchura";
-        }
+        if(auto) esperar(3000);
         else{
-            titulo = "Rec. por Profundidad";
+            bucle = true;
+            while(bucle) esperar(50);
         }
+    }
+    private void graficarRec(String color, String[][] matAdy){
+        String titulo = "Rec. por Profundidad";
+        if (tipo == 1) titulo = "Rec. por Anchura";
+        graficar.graficarRec(titulo, color, matriz, matAdy);
         if(auto) esperar(3000);
         else{
             bucle = true;
