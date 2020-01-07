@@ -33,7 +33,10 @@ public class Eliminar extends Frame{
             b.setGraf(false);
             b.setTipo(0);
             raiz = null;
+            b.setOrden();
             for(int i = 0; i < valores.length; i++){
+                System.out.println("-->" + valores[i]);
+                b.setRomper();
                 raiz = b.insertarDato(raiz, valores[i]);
             }
             b.setTipo(1);

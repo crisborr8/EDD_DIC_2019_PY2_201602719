@@ -188,7 +188,7 @@ public class Ordenamiento extends Thread{
         else if(tipoOrd == 1) titulo += " por Insercion";
         else titulo += " Quicksort";
         graficar.graficarOrd(titulo, extra, valores, colores);
-        if(auto) esperar(3000);
+        if(auto) esperar(5000);
         else{
             bucle = true;
             while(bucle) esperar(50);

@@ -87,7 +87,8 @@ public class B extends Thread{
                 boolean eliminar = true;
                 while(eliminar){
                     if(!bucle){
-                        System.out.println("Iniciando eliminacion");
+                        System.out.println("Iniciando eliminacion de " + num);
+                        romper = false;
                         raiz = eliminarDato(raiz);
                         graficar("Eliminacion Finalizada");
                         bucle = true;
@@ -256,25 +257,25 @@ public class B extends Thread{
         }
         return act;
     }
-    public boolean existenHijos(Nodo act){
+    private boolean existenHijos(Nodo act){
         for(int i = 0; i < act.getPaginas().length; i++){
             if(act.getPaginas()[0] != null) return true;
         }
         return false;
     }
-    public boolean existeEspacio(Nodo act){
+    private boolean existeEspacio(Nodo act){
         for(int i = 0; i < act.getClaves().length; i++){
             if(act.getClaves()[i] == null) return true;
         }
         return false;
     }
-    public Nodo crearNodo(int numero){
+    private Nodo crearNodo(int numero){
         Nodo nuevo = new Nodo(orden);
         nuevo.getClaves()[0] = numero;
         nuevo = setTodoBlanco(nuevo);
         return nuevo;
     }
-    public Nodo setTodoBlanco(Nodo act){
+    private Nodo setTodoBlanco(Nodo act){
         for(int i = 0; i < act.getColorClave().length; i++){
             act.getColorClave()[i] = "white";
         }
@@ -289,11 +290,229 @@ public class B extends Thread{
     //ELIMINAR
     public Nodo eliminarDato(Nodo act){
         if(act == null) return null;
-        Nodo elim;
-        for(int i = 0; i < act.getClaves().length; i++){
-            
+        else if(existenHijos(act)){
+            act.setPintarTodo(true);
+            graficar("Eliminar: " + num);
+            act.setPintarTodo(false);
+            for(int i = 0; i < act.getClaves().length; i++){
+                if(num < act.getClaves()[i]){
+                    act.getColorPagina()[i] = "green";
+                    graficar("Eliminar: " + num);
+                    act.getColorPagina()[i] = "white";
+                    act.getPaginas()[i] = eliminarDato(act.getPaginas()[i]);
+                    if(romper == true) act = merge(act, act.getPaginas()[i]);
+                    break;
+                }
+                else if(num == act.getClaves()[i]){
+                    act.getColorClave()[i] = "green";
+                    graficar("ENCONTRADO!!: " + num);
+                    act.getColorClave()[i] = "white";
+                    
+                    
+                    
+                    break;
+                }
+                else if(num > act.getClaves()[i] && i == act.getClaves().length - 1){
+                    act.getColorPagina()[i + 1] = "green";
+                    graficar("Eliminar: " + num);
+                    act.getColorPagina()[i + 1] = "white";
+                    act.getPaginas()[i + 1] = eliminarDato(act.getPaginas()[i + 1]);
+                    if(romper == true) act = merge(act, act.getPaginas()[i + 1]);
+                    break;
+                }
+                else if(num > act.getClaves()[i] && act.getClaves()[i + 1] == null){
+                    act.getColorPagina()[i + 1] = "green";
+                    graficar("Eliminar: " + num);
+                    act.getColorPagina()[i + 1] = "white";
+                    act.getPaginas()[i + 1] = eliminarDato(act.getPaginas()[i + 1]);
+                    if(romper == true) act = merge(act, act.getPaginas()[i + 1]);
+                    break;
+                }
+            }
         }
-        return null;
+        else{
+            act = eliminarClave(act);
+            if(act.getClaves()[1] == null) romper = true;
+        }
+        act.setPintarTodo(true);
+        graficar("Eliminar: " + num);
+        act.setPintarTodo(false);
+        return act;
+    }
+    private Nodo merge(Nodo padre, Nodo hijo){
+        System.out.println("MERGE!");
+        Nodo hermanoIzq = null;
+        Nodo hermanoDer = null;
+        for(int i = 0; i < padre.getPaginas().length; i++){
+            if(padre.getPaginas()[i] == hijo){
+                if(i != 0){
+                    if(padre.getPaginas()[i - 1].getClaves()[2] != null){
+                        hermanoIzq = padre.getPaginas()[i - 1];
+                        break;
+                    }
+                }
+                if(i < padre.getPaginas().length - 1){
+                    if(padre.getPaginas()[i + 1].getClaves()[2] != null){
+                        hermanoDer = padre.getPaginas()[i + 1];
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        int nNum = 0, aux;
+        Nodo paginaAux = null;
+        if(hermanoIzq != null){
+            hermanoIzq.setPintarTodo(true);
+            graficar("Prestar hermano izquierdo");
+            hermanoIzq.setPintarTodo(false);
+            for(int i = 0; i < hermanoIzq.getClaves().length; i++){
+                if(i == hermanoIzq.getClaves().length - 1){
+                    hermanoIzq.getColorClave()[i] = "green";
+                    graficar("Nodo prestado");
+                    hermanoIzq.getColorClave()[i] = "white";
+                    nNum = hermanoIzq.getClaves()[i];
+                    hermanoIzq.getClaves()[i] = null;
+                    paginaAux = hermanoIzq.getPaginas()[i + 1];
+                    break;
+                }
+                else if(hermanoIzq.getClaves()[i + 1] == null){
+                    hermanoIzq.getColorClave()[i] = "green";
+                    graficar("Nodo prestado");
+                    hermanoIzq.getColorClave()[i] = "white";
+                    nNum = hermanoIzq.getClaves()[i];
+                    hermanoIzq.getClaves()[i] = null;
+                    paginaAux = hermanoIzq.getPaginas()[i + 1];
+                    break;
+                }
+            }
+            for(int i = 0; i < padre.getClaves().length; i++){
+                if(nNum < padre.getClaves()[i]){
+                    padre.getColorClave()[i] = "green";
+                    graficar("Nodo padre a mover");
+                    padre.getColorClave()[i] = "white";
+                    aux = padre.getClaves()[i];
+                    padre.getClaves()[i] = nNum;
+                    nNum = aux;
+                    for(int j = 0; j < padre.getPaginas()[i + 1].getClaves().length; j++){
+                        if(padre.getPaginas()[i + 1].getClaves()[j] == null){
+                            padre.getPaginas()[i + 1].getClaves()[j] = nNum;
+                            padre.getPaginas()[i + 1].setClaves(ordenarClaves(padre.getPaginas()[i + 1].getClaves()));
+                            padre.getPaginas()[i + 1].getPaginas()[j + 1] = paginaAux;
+                            padre.getPaginas()[i + 1].setPaginas(ordenarPaginas(padre.getPaginas()[i + 1].getPaginas()));
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            padre.setPintarTodo(true);
+            graficar("Cambio realizado");
+            padre.setPintarTodo(false);
+            romper = false;
+        }
+        else if(hermanoDer != null){
+            hermanoDer.setPintarTodo(true);
+            graficar("Prestar hermano derecho");
+            hermanoDer.setPintarTodo(false);
+            nNum = hermanoDer.getClaves()[0];
+            paginaAux = hermanoDer.getPaginas()[0];
+            hermanoDer.getColorClave()[0] = "green";
+            graficar("Nodo prestado");
+            hermanoDer.getColorClave()[0] = "white";
+            for(int i = 1; i < hermanoDer.getClaves().length; i++){
+                hermanoDer.getClaves()[i - 1] = hermanoDer.getClaves()[i];
+                hermanoDer.getClaves()[i] = null;
+                hermanoDer.getPaginas()[i - 1] = hermanoDer.getPaginas()[i];
+                hermanoDer.getPaginas()[i] = null;
+            }
+            for(int i = 0; i < padre.getClaves().length; i++){
+                if(i == padre.getClaves().length - 1){
+                    padre.getColorClave()[i - 1] = "green";
+                    graficar("Nodo padre a mover");
+                    padre.getColorClave()[i - 1] = "white";
+                    aux = padre.getClaves()[i - 1];
+                    padre.getClaves()[i - 1] = nNum;
+                    nNum = aux;
+                    for(int j = 0; j < padre.getPaginas()[i - 1].getClaves().length; j++){
+                        if(padre.getPaginas()[i - 1].getClaves()[j] == null){
+                            padre.getPaginas()[i - 1].getClaves()[j] = nNum;
+                            padre.getPaginas()[i - 1].setClaves(ordenarClaves(padre.getPaginas()[i - 1].getClaves()));
+                            padre.getPaginas()[i - 1].getPaginas()[j + 1] = paginaAux;
+                            padre.getPaginas()[i - 1].setPaginas(ordenarPaginas(padre.getPaginas()[i - 1].getPaginas()));
+                            break;
+                        }
+                    }
+                    break;
+                }
+                else if(padre.getClaves()[i] == null){
+                    padre.getColorClave()[i - 1] = "green";
+                    graficar("Nodo padre a mover");
+                    padre.getColorClave()[i - 1] = "white";
+                    aux = padre.getClaves()[i - 1];
+                    padre.getClaves()[i - 1] = nNum;
+                    nNum = aux;
+                    for(int j = 0; j < padre.getPaginas()[i - 1].getClaves().length; j++){
+                        if(padre.getPaginas()[i - 1].getClaves()[j] == null){
+                            padre.getPaginas()[i - 1].getClaves()[j] = nNum;
+                            padre.getPaginas()[i - 1].setClaves(ordenarClaves(padre.getPaginas()[i - 1].getClaves()));
+                            padre.getPaginas()[i - 1].getPaginas()[j + 1] = paginaAux;
+                            padre.getPaginas()[i - 1].setPaginas(ordenarPaginas(padre.getPaginas()[i - 1].getPaginas()));
+                            break;
+                        }
+                    }
+                    break;
+                }
+                else if(nNum < padre.getClaves()[i]){
+                    padre.getColorClave()[i - 1] = "green";
+                    graficar("Nodo padre a mover");
+                    padre.getColorClave()[i - 1] = "white";
+                    aux = padre.getClaves()[i - 1];
+                    padre.getClaves()[i - 1] = nNum;
+                    nNum = aux;
+                    for(int j = 0; j < padre.getPaginas()[i - 1].getClaves().length; j++){
+                        if(padre.getPaginas()[i - 1].getClaves()[j] == null){
+                            padre.getPaginas()[i - 1].getClaves()[j] = nNum;
+                            padre.getPaginas()[i - 1].setClaves(ordenarClaves(padre.getPaginas()[i - 1].getClaves()));
+                            padre.getPaginas()[i - 1].getPaginas()[j + 1] = paginaAux;
+                            padre.getPaginas()[i - 1].setPaginas(ordenarPaginas(padre.getPaginas()[i - 1].getPaginas()));
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            padre.setPintarTodo(true);
+            graficar("Cambio realizado");
+            padre.setPintarTodo(false);
+            romper = false;
+        }
+        else{
+            if(padre.getPaginas()[0] != hijo){
+                
+            }
+            else{
+                
+            }
+        }
+        return padre;
+    }
+    private Nodo eliminarClave(Nodo act){
+        for(int i = 0; i < act.getClaves().length; i++){
+            if(act.getClaves()[i] == num){
+                act.getColorClave()[i] = "green";
+                graficar("ENCONTRADO!!: " + num);
+                act.getColorClave()[i] = "white";
+                act.getClaves()[i] = null;
+                while(i < act.getClaves().length - 1){
+                    act.getClaves()[i] = act.getClaves()[i + 1];
+                    act.getClaves()[i + 1] = null;
+                    i++;
+                }
+                break;
+            }
+        }
+        return act;
     }
     
     //**************************************************************************

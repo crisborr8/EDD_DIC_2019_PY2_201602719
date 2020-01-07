@@ -422,7 +422,7 @@ public class AVL extends Thread{
     public void graficar(String extra){
         if(graf){
             graficar.graficarAVL(extra, raiz);
-            if(auto) esperar(3000);
+            if(auto) esperar(5000);
             else{
                 bucle = true;
                 while(bucle) esperar(50);

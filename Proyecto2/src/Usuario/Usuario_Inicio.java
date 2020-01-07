@@ -5,6 +5,7 @@ import Frame.Frame;
 public class Usuario_Inicio extends Frame{
     
     Usuario.Ordenamiento.Inicio iniOrd;
+    Usuario.Matriz.Inicio iniMat;
     Usuario_Arbol usAr;
     Login.Login lg;
     EDD.Hash hash;
@@ -13,6 +14,7 @@ public class Usuario_Inicio extends Frame{
         this.lg = lg;
         frame.setVisible(false);
         usAr = new Usuario_Arbol(this);
+        iniMat = new Usuario.Matriz.Inicio(this);
         iniOrd = new Usuario.Ordenamiento.Inicio(this);
         setUserInicio();
     }
@@ -30,7 +32,9 @@ public class Usuario_Inicio extends Frame{
     //MATRIZ
     @Override
     protected void setBtn1(){
-        
+        iniMat.setDatos(datos);
+        frame.setVisible(false);
+        iniMat.setVisible();
     }
     //ORDENAMIENTOS
     @Override

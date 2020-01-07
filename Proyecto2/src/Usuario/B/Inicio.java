@@ -26,9 +26,9 @@ public class Inicio extends Frame{
     //ELIMINAR
     @Override
     protected void setBtn1(){
-        
+        Eliminar eli = new Eliminar(this);
         frame.setVisible(false);
-        
+        eli.setDatos(datos);
     }
     //RECORRER
     @Override

@@ -220,6 +220,19 @@ public class Graficar {
             codigo += nodoColor + " [fillcolor=green];\n";
             codigo += "_" + nodoColor + " [fillcolor=green];\n";
         }
+        codigo += "node_K [label=\"";
+        for(int i = 0; i < reProf.length; i++){
+            for(int j = 0; j < reProf[i].length; j++){
+                if(reProf[i][j] != null){
+                    if(i == 0 && j == 0) codigo += reProf[i][j];
+                    else if(reProf[i][1] == null && j == 0) codigo += reProf[i][j];
+                    else if(reProf[i][1] != null && j != 0) codigo += reProf[i][j];
+                    if(i != reProf.length - 1 || j != reProf[i].length - 1)
+                        codigo += "|";
+                }
+            }
+        }
+        codigo += "\", shape=record];\n";
         Mostrar(codigo);
     }
     private String getCodigoRec(int i, String[][] matriz){

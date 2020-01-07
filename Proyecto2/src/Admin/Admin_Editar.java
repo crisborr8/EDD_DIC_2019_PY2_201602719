@@ -64,7 +64,7 @@ public class Admin_Editar extends Frame{
                             hash.buscarUsuario(carnet, disp, 0).getDatos()[0] = txt2.getText();
                             hash.buscarUsuario(carnet, disp, 0).getDatos()[1] = txt0.getText();
                             hash.buscarUsuario(carnet, disp, 0).getDatos()[2] = txt1.getText();
-                            hash.buscarUsuario(carnet, disp, 0).getDatos()[3] = txt3.getText();
+                            hash.buscarUsuario(carnet, disp, 0).getDatos()[3] = hash.getSha256(txt3.getText());
                             cb0.removeAllItems();
                             cargarUsuarios();
                             txt0.setText("");
@@ -79,7 +79,7 @@ public class Admin_Editar extends Frame{
                     }else{
                         hash.buscarUsuario(carnet, disp, 0).getDatos()[1] = txt0.getText();
                         hash.buscarUsuario(carnet, disp, 0).getDatos()[2] = txt1.getText();
-                        hash.buscarUsuario(carnet, disp, 0).getDatos()[3] = txt3.getText();
+                        hash.buscarUsuario(carnet, disp, 0).getDatos()[3] = hash.getSha256(txt3.getText());
                         cb0.removeAllItems();
                         cargarUsuarios();
                         txt0.setText("");

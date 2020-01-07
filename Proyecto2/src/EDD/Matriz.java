@@ -154,7 +154,7 @@ public class Matriz extends Thread{
     private String[][] setMatProf(int iMat, int iAdy, String[][] matAdy){
         matAdy[iAdy][0] = matriz[iMat][0];
         int jAdy = 1;
-        if(matriz[iMat].length == 1) graficarRec(matriz[iMat][0], matAdy);
+        if(iMat == 0 && iAdy == 0) graficarRec(matriz[iMat][0], matAdy);
         for(int j = 1; j < matriz[iMat].length; j++){
             if(!estaVisitado(matriz[iMat][j])){
                 for(int i = 0; i < visitado.length; i++){
@@ -187,7 +187,7 @@ public class Matriz extends Thread{
     private String[][] setMatAnch(int iMat, int iAdy, String[][] matAdy){
         matAdy[iAdy][0] = matriz[iMat][0];
         int jAdy = 1;
-        if(matriz[iMat].length == 1) graficarRec(matriz[iMat][0], matAdy);
+        if(iMat == 0 && iAdy == 0) graficarRec(matriz[iMat][0], matAdy);
         for(int j = 1; j < matriz[iMat].length; j++){
             if(!estaVisitado(matriz[iMat][j])){
                 for(int i = 0; i < visitado.length; i++){
@@ -264,7 +264,7 @@ public class Matriz extends Thread{
             titulo += "de Adyacencia";
             graficar.graficarAdy(titulo, ingresar, color, matAdy);
         }
-        if(auto) esperar(3000);
+        if(auto) esperar(5000);
         else{
             bucle = true;
             while(bucle) esperar(50);
@@ -274,7 +274,7 @@ public class Matriz extends Thread{
         String titulo = "Rec. por Profundidad";
         if (tipo == 1) titulo = "Rec. por Anchura";
         graficar.graficarRec(titulo, color, matriz, matAdy);
-        if(auto) esperar(3000);
+        if(auto) esperar(5000);
         else{
             bucle = true;
             while(bucle) esperar(50);
