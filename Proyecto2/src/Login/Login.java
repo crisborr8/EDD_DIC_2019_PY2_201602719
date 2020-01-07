@@ -43,7 +43,7 @@ public class Login extends Frame{
                 int disp = hash.getDisp(Integer.parseInt(usuario.trim()));
                 EDD.Hash.Nodo nodo = hash.buscarUsuario(Integer.parseInt(usuario.trim()), disp, 0);
                 if(nodo != null){
-                    if(nodo.getDatos()[3].equals(contra)){
+                    if(nodo.getDatos()[3].equals(hash.getSha256(contra))){
                         usIn.setDatos(nodo.getDatos());
                         frame.setVisible(false);
                         usIn.setVisible();

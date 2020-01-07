@@ -1,0 +1,32 @@
+Errores al ingresar:
+**************************************************
+->Usuario: Zachary
+  Carnet:  538377039
+  Problema: Contraseña posee menos de 8 caracteres
+            POIcWD
+**************************************************
+->Usuario: Colette
+  Carnet:  578151498
+  Problema: Contraseña posee menos de 8 caracteres
+            wmYOZ7
+**************************************************
+->Usuario: Lyndel
+  Carnet:  961531768
+  Problema: Contraseña posee menos de 8 caracteres
+            kuIgEwE
+**************************************************
+->Usuario: Lorianne
+  Carnet:  473423160
+  Problema: Contraseña posee menos de 8 caracteres
+            FTUim7
+**************************************************
+->Usuario: Jewell
+  Carnet:  392606317
+  Problema: Contraseña posee menos de 8 caracteres
+            jYZcBV
+**************************************************
+->Usuario: Gasper
+  Carnet:  770697285
+  Problema: Contraseña posee menos de 8 caracteres
+            eVLEIM
+**************************************************

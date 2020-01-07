@@ -33,6 +33,8 @@ public class Admin_Inicio extends Frame{
         else{
             lbl2.setForeground(Color.blue);
             lbl2.setText("Abierto con exito");
+            Graficar.Graficar gr = new Graficar.Graficar();
+            gr.mostrar_Reporte(hash.getLog());
         }
     }
     //EDITAR

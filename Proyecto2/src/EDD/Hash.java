@@ -1,5 +1,11 @@
 package EDD;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Hash {
     
     //**************************************************************************
@@ -37,7 +43,7 @@ public class Hash {
     //CONSTRUCTOR DE LA TABLA HASH
     public Hash(){
         tabla = new Nodo[37];
-        log = "Errores al ingresar: ";
+        log = "Errores al ingresar:\n";
         log += "**************************************************\n";
         cant = 0;
         size = 37;
@@ -46,6 +52,7 @@ public class Hash {
     //**************************************************************************
     //**************************************************************************
     //GETS DE LA TABLA HASH
+    public String getLog() { return log; }
     public int getCant() { return cant; }
     public Nodo[] getTabla() { return tabla; }
     public int getDisp(int carnet) { return carnet % size; }
@@ -76,6 +83,7 @@ public class Hash {
                 cant++;
                 tabla[disp] = new Nodo();
                 tabla[disp].setDatos(datos);
+                datos[3] = getSha256(datos[3]);
                 if(getFactCarg() >= 55) ordenarNuevaTabla();
             }
             else{
@@ -169,5 +177,22 @@ public class Hash {
                 else c++;
             }
         }
+    }
+    public String getSha256(String contra){
+        MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(contra.getBytes(StandardCharsets.UTF_8));
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < hash.length; i++) {
+                String hex = Integer.toHexString(0xff & hash[i]);
+                if(hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println("Error al convertir contraseña en sha256");
+        }
+        return null;
     }
 }

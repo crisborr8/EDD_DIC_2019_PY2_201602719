@@ -12,15 +12,15 @@ public class Graficar {
         codigo = "digraph G{\n" + codigo;
         codigo += "\n}";
         try{       
-            BufferedWriter writer = new BufferedWriter(new FileWriter("imagen.dot"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("../imagen.dot"));
             writer.write(codigo);
             writer.close();
             ProcessBuilder pbuilder;
-            pbuilder = new ProcessBuilder( "dot", "-Tpng", "-o", "imagen.png", "imagen.dot" );
+            pbuilder = new ProcessBuilder( "dot", "-Tpng", "-o", "../imagen.png", "../imagen.dot" );
             pbuilder.redirectErrorStream( true );
             pbuilder.start();
             Desktop desktop = Desktop.getDesktop();
-            File file = new File("imagen.png");
+            File file = new File("../imagen.png");
             if(file.exists()) desktop.open(file);
 	}catch (Exception e){ 
             e.printStackTrace(); 
@@ -55,6 +55,20 @@ public class Graficar {
         }
         Mostrar(codigo);
     }
+    public void mostrar_Reporte(String reporte){
+        if(!reporte.equals("")){
+            try{       
+                BufferedWriter writer = new BufferedWriter(new FileWriter("reporte.txt"));
+                writer.write(reporte);
+                writer.close();
+                Desktop desktop = Desktop.getDesktop();
+                File file = new File("reporte.txt");
+                if(file.exists()) desktop.open(file);
+            }catch (Exception e){ 
+                e.printStackTrace(); 
+            }
+        }
+    }
     
     //**************************************************************************
     //**************************************************************************
@@ -68,7 +82,11 @@ public class Graficar {
         Mostrar(codigo);
     }
     private String getCodigoAVL(AVL.Nodo act){
-        String codigo = "_" + act.getNum() + "[label=\"<i>|" + act.getNum() + "|<d>\", fillcolor=" + act.getColor() + "];\n";
+        String codigo = "_" + act.getNum() + "[label=\"<i>|"
+                       + act.getNum() + "\\n"
+                       + "Altura: " + act.getAlt() + "\\n"
+                       + "Fact. Equ: " + getFactEqu(act)
+                       + "|<d>\", fillcolor=" + act.getColor() + "];\n";
         if(act.getIzq() != null){
             codigo += "_" + act.getNum() + ":i->_" + act.getIzq().getNum() + ";\n";
             codigo += getCodigoAVL(act.getIzq());
@@ -78,6 +96,12 @@ public class Graficar {
             codigo += getCodigoAVL(act.getDer());
         }
         return codigo;
+    }
+    private int getFactEqu(AVL.Nodo act){
+        if(act.getIzq() == null && act.getDer() == null) return 0;
+        else if(act.getIzq() == null) return - act.getDer().getAlt();
+        else if(act.getDer() == null) return act.getIzq().getAlt();
+        return act.getIzq().getAlt() - act.getDer().getAlt();
     }
     
     //**************************************************************************
